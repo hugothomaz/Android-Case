@@ -2,6 +2,7 @@ package com.hugothomaz.rotafrete.screen
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.hugothomaz.domain.domain
 import com.hugothomaz.rotafrete.R
 
 class MainActivity : AppCompatActivity() {
