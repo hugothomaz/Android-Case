@@ -1,7 +1,8 @@
-package com.hugothomaz.rotafrete
+package com.hugothomaz.rotafrete.screen
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.hugothomaz.rotafrete.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
