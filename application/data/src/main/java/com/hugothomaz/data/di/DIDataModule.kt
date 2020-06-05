@@ -6,6 +6,7 @@ import com.hugothomaz.data.BuildConfig
 import com.hugothomaz.data.cloud.AppCloud
 import com.hugothomaz.data.cloud.GEOApi
 import com.hugothomaz.data.cloud.FreightAPI
+import com.hugothomaz.data.repository.FreightRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
@@ -35,6 +36,8 @@ val dataModule = module {
     single { providerServiceFreightAPI(get(named("freight"))) }
 
     single { AppCloud(get<GEOApi>(), get<FreightAPI>()) }
+
+    single { FreightRepository(get()) }
 
 }
 

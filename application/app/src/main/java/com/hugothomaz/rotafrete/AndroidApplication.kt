@@ -2,6 +2,7 @@ package com.hugothomaz.rotafrete
 
 import android.app.Application
 import com.hugothomaz.data.di.dataModule
+import com.hugothomaz.domain.di.domainModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -15,7 +16,7 @@ class AndroidApplication : Application() {
         startKoin {
             androidLogger(Level.INFO)
             androidContext(this@AndroidApplication)
-            modules(dataModule)
+            modules(dataModule, domainModel)
         }
     }
 
