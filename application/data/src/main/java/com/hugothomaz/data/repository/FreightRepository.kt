@@ -21,15 +21,15 @@ class FreightRepository(
         val feirghtResponseToModelMapper = FeirghtResponseToModelMapper()
 
         return appCloud.getRouter(mapperModelToRequest.transform(routerModel))
-            .flatMap {
+            .flatMap {router ->
                 appCloud.getFreightPrice(
                     FreightPriceRequest(
                         axis = routerModel.axis,
-                        distance = it.distance,
+                        distance = router.distance,
                         hasReturnShipment = hasReturnShipment
                     )
-                ).map {
-                    feirghtResponseToModelMapper.transform(it)
+                ).map {freight ->
+                    feirghtResponseToModelMapper.transform(freight)
                 }
             }
     }

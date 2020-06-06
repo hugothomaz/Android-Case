@@ -3,8 +3,10 @@ package com.hugothomaz.domain.model
 import com.hugothomaz.domain.model.enums.DistanceUnitEnum
 import com.hugothomaz.domain.model.enums.MoneyUnitEnum
 import com.hugothomaz.domain.model.enums.VolumeUnitEnum
+import java.util.*
 
 data class FreightModel(
+    val date : Date,
     val distance: Double,
     val distanceUnit: DistanceUnitEnum,
     val duration: Int,

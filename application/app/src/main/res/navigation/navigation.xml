@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/main_fragment">
+
+
+    <fragment
+        android:id="@+id/main_fragment"
+        android:name="com.hugothomaz.rotafrete.screen.main.MainFragment"
+        android:label="Fragment Main"
+        tools:layout="@layout/fragment_main">
+        <action android:id="@+id/action_main_to_freight"
+            app:destination="@id/freight_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/freight_fragment"
+        android:name="com.hugothomaz.rotafrete.screen.freight.FreightFragment"
+        android:label="Fragment Freight"
+        tools:layout="@layout/fragment_freight">
+    </fragment>
+
+</navigation>
