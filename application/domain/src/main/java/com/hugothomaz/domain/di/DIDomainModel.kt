@@ -6,6 +6,8 @@ import org.koin.dsl.module
 
 
 val domainModel = module {
+
     factory { CalcFreightUseCase(get<IFreightRepository>()) }
+
 }
 

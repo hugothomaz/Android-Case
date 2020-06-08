@@ -9,22 +9,13 @@ class MainStatesView : BaseObservable(){
 
     @Bindable
     var isEmpty : Boolean = false
-    private set(value){
-        when {
-            !isShowHistoricCalcFreight && !isShowInsightButton -> {
-                field = false
-            }
-            else -> {
-                field = true
-            }
-        }
-        notifyPropertyChanged(BR.isEmpty)
-    }
+    private set
 
     @Bindable
     var isShowHistoricCalcFreight : Boolean = false
     set(value) {
         field = value
+        checkStateEmpty()
         notifyPropertyChanged(BR.isShowHistoricCalcFreight)
     }
 
@@ -39,7 +30,20 @@ class MainStatesView : BaseObservable(){
     var isShowInsightButton : Boolean = false
     set(value) {
         field = value
+        checkStateEmpty()
         notifyPropertyChanged(BR.isShowInsightButton)
+    }
+
+    private fun checkStateEmpty(){
+        when {
+            !isShowHistoricCalcFreight && !isShowInsightButton -> {
+                isEmpty = false
+            }
+            else -> {
+                isEmpty = true
+            }
+        }
+        notifyPropertyChanged(BR.isEmpty)
     }
 
 }

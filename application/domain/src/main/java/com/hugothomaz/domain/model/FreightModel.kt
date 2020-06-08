@@ -7,7 +7,7 @@ import java.util.*
 
 data class FreightModel(
     val date : Date,
-    val distance: Double,
+    val distance: Int,
     val distanceUnit: DistanceUnitEnum,
     val duration: Int,
     val durationUnit: DurationUnit,
@@ -16,8 +16,9 @@ data class FreightModel(
     val tollCost: Double,
     val tollMoneyUnit: MoneyUnitEnum,
     val fuelUsed: Double,
-    val volumeUnitEnum: VolumeUnitEnum,
+    val fuelUseUnit: VolumeUnitEnum,
     val fuelCost: Double,
     val fuelMoneyUnit: MoneyUnitEnum,
-    val totalCost: Double
+    val totalCost: Double,
+    val typeOfCargoModel : TypeOfCargoModel
 )
