@@ -9,11 +9,12 @@ import com.hugothomaz.rotafrete.R
 import com.hugothomaz.rotafrete.databinding.StepAxisFragmentBinding
 import com.hugothomaz.rotafrete.databinding.StepFuelConsumptionFragmentBinding
 import com.hugothomaz.rotafrete.screen.freight.FreightViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FragmentFuelConsumption : Fragment(R.layout.step_fuel_consumption_fragment) {
 
-    private val viewModel by viewModel<FreightViewModel>()
+    private val viewModel by sharedViewModel<FreightViewModel>()
     private lateinit var bind : StepFuelConsumptionFragmentBinding
 
 
@@ -28,7 +29,11 @@ class FragmentFuelConsumption : Fragment(R.layout.step_fuel_consumption_fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViewModel()
+    }
 
+    private fun bindViewModel(){
+        bind.viewModel = viewModel
     }
 
 }

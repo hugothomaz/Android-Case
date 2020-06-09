@@ -2,83 +2,146 @@ package com.hugothomaz.rotafrete.screen.freight.adapter
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import com.hugothomaz.rotafrete.extensions.moneyToDouble
+import com.hugothomaz.rotafrete.extensions.noFormatedToDoble
+import com.hugothomaz.rotafrete.extensions.removeSymbolMoney
+import com.hugothomaz.rotafrete.extensions.toMoney
+import org.joda.money.CurrencyUnit
+import org.joda.money.Money
+import java.util.*
 
 object FreightBindingAdapter {
 
     //** Double **
     @JvmStatic
-    @BindingAdapter(value = ["text"], requireAll = false)
-    fun setTextInputDouble(
+    @BindingAdapter(value = ["bindTextDouble"], requireAll = false)
+    fun bindTextDouble(
         textView: TextView, textDouble: Double
     ) {
         val oldText = textView.text
-        textDouble?.let {text ->
+
+        (textDouble / 100).let { text ->
             if (text.toString() !== oldText && (text != null || oldText.length != 0)) {
-                if (text.toString() == oldText) {
-                    return
+                if (!text.toString().equals(oldText.toString())) {
+                    textView.text = text.toString()
                 }
-                textView.text = text.toString()
             }
         }
-
     }
 
-    @InverseBindingAdapter(attribute = "text")
+    @InverseBindingAdapter(attribute = "bindTextDouble")
     @JvmStatic
-    fun getText(textView: TextView) : Double {
-        return textView.text.toString().toDouble()
+    fun getText(textView: TextView): Double {
+        if (textView.text.isNotEmpty()) {
+            val value = textView.text
+            return value.toString().removeSymbolMoney().toDouble()
+        } else {
+            return 0.0
+        }
     }
 
     @JvmStatic
-    @BindingAdapter("textAttrChanged")
+    @BindingAdapter("bindTextDoubleAttrChanged")
     fun setTextInputDoubleChangeListener(editText: TextView, listener: InverseBindingListener) {
         editText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) = listener.onChange()
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+            override fun afterTextChanged(p0: Editable?) {
+                listener.onChange()
+                p0?.let {
+                    if(editText is EditText){
+                        editText.setSelection(p0.length)
+                    }
+                }
             }
-
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
         })
     }
 
 
-    //** Int **
+    //** Money **
+    @JvmStatic
+    @BindingAdapter(value = ["bindMoney"], requireAll = false)
+    fun bindMoney(
+        textView: TextView, textDouble: Double /*temos que entrar com texto, la no viewmodel ja conrter para texto*/
+    ) {
+        if(textView.text.toString().isNotEmpty()){
+            val oldText = textView.text.toString().moneyToDouble()
+            textDouble.let { textD ->
+                if (textD !== oldText && (textD != null || oldText != 0.0)) {
+                    if (!textD.toString().equals(oldText.toString())) {
+                        val money = textDouble.toMoney()
+                        textView.text = money
+                    }
+                }
+            }
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "bindMoney")
+    @JvmStatic
+    fun getMoney(textView: TextView): Double {
+        if (textView.text.isNotEmpty()) {
+            val value = textView.text.toString()
+            return value.noFormatedToDoble()
+        } else {
+            return 0.0
+        }
+    }
 
     @JvmStatic
-    @BindingAdapter(value = ["text"], requireAll = false)
+    @BindingAdapter("bindMoneyAttrChanged")
+    fun setTextInputMoneyChangeListener(editText: TextView, listener: InverseBindingListener) {
+        editText.addTextChangedListener(MoneyTextWatcher(editText as EditText, listener))
+    }
+
+
+    //** Int **
+    @JvmStatic
+    @BindingAdapter(value = ["bindTextInt"], requireAll = false)
     fun setTextInputInt(
         textView: TextView, textInt: Int
     ) {
         val oldText = textView.text
-        textInt?.let { text ->
+        textInt.let { text ->
             if (text.toString() !== oldText && (text != null || oldText.length != 0)) {
-                if (text.toString() == oldText) {
-                    return
+                if (!text.toString().equals(oldText.toString())) {
+                    textView.text = text.toString()
                 }
-                textView.text = text.toString()
             }
-        }?:textView.setText("0")
-
+        }
     }
 
-    @InverseBindingAdapter(attribute = "text")
+    @InverseBindingAdapter(attribute = "bindTextInt")
     @JvmStatic
-    fun getTextInputInt(textView: TextView) : Int {
-        if(textView.text.isNotEmpty()){
+    fun getTextInputInt(textView: TextView): Int {
+        if (textView.text.isNotEmpty()) {
             val value = textView.text
             return value.toString().toInt()
-        }else{
+        } else {
             return 0
         }
-
     }
 
+    @JvmStatic
+    @BindingAdapter("bindTextIntAttrChanged")
+    fun setTextInputIntChangeListener(editText: TextView, listener: InverseBindingListener) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                listener.onChange()
+                p0?.let {
+                    if(editText is EditText){
+                        editText.setSelection(p0.length)
+                    }
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        })
+    }
 
 }

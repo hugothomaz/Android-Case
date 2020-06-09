@@ -28,13 +28,14 @@ class FreightViewModel(
         get() = statesMutableLiveData
 
 
+
     fun calcFreight() {
         states.run {
             calcFreightUseCase.execute(
                 RouterModel(
                     pointModelStart = statesView.pointStart!!,
                     pointModelEnd = statesView.pointEnd!!,
-                    axis = statesView.numberAxis!!,
+                    axis = statesView.numberAxis?:0,
                     fuelConsumption = statesView.fuelConsumption!!,
                     fuelPrice = statesView.fuelPrice!!
                 ),
@@ -54,6 +55,10 @@ class FreightViewModel(
 
                 )
         }
+    }
+
+    fun next(){
+        statesView.nextStep()
     }
 
 }

@@ -9,13 +9,14 @@ import androidx.lifecycle.Observer
 import com.hugothomaz.rotafrete.databinding.FragmentFreightBinding
 import com.hugothomaz.rotafrete.screen.freight.adapter.FreightStepViewPagerAdapter
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStates
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class FreightFragment : Fragment() {
 
     private lateinit var binding: FragmentFreightBinding
-    private val viewModel by viewModel<FreightViewModel>()
+    private val viewModel by sharedViewModel<FreightViewModel>()
 
     private var viewPager: ViewPagerFreight? = null
 
@@ -38,7 +39,6 @@ class FreightFragment : Fragment() {
         viewModel.setFuelConsumption(4.6)
         viewModel.setFuelPrice(2.5)
         viewModel.calcFreight()*/
-
     }
 
     private fun bindViewModel() {
@@ -57,19 +57,15 @@ class FreightFragment : Fragment() {
             it.adapter = FreightStepViewPagerAdapter(childFragmentManager)
             indicator.setupWithViewPager(it)
         }
-
-
-
     }
-
 
     private fun handlerStatus(states: FreightStates?) {
         when (states) {
             is FreightStates.Next -> {
                 viewPager?.currentItem = states.stepPosition
-
             }
             is FreightStates.Back -> {
+                viewPager?.currentItem = states.stepPosition
             }
             is FreightStates.NotReadyToNextStep -> {
             }

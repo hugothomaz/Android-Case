@@ -4,10 +4,7 @@ import android.view.MotionEvent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.hugothomaz.rotafrete.screen.freight.steps.FragmentAxis
-import com.hugothomaz.rotafrete.screen.freight.steps.FragmentFuelConsumption
-import com.hugothomaz.rotafrete.screen.freight.steps.FragmentFuelPrice
-import com.hugothomaz.rotafrete.screen.freight.steps.FragmentPoint
+import com.hugothomaz.rotafrete.screen.freight.steps.*
 
 
 class FreightStepViewPagerAdapter(fragmentManager: FragmentManager) :
@@ -19,7 +16,8 @@ class FreightStepViewPagerAdapter(fragmentManager: FragmentManager) :
             FragmentFuelPrice(),
             FragmentFuelConsumption(),
             FragmentPoint(),
-            FragmentPoint()
+            FragmentPoint(),
+            FragmentResume()
         )
 
 

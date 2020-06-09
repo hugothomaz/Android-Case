@@ -7,20 +7,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_text_layout_num_axis"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:hint="Preço do compustivel"
-            app:text="@={viewModel.statesView.fuelPrice}"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Preço do compustivel"
+                android:inputType="numberDecimal"
+                app:bindMoney="@={viewModel.statesView.fuelPrice}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <data>
+
         <variable
             name="viewModel"
             type="com.hugothomaz.rotafrete.screen.freight.FreightViewModel" />

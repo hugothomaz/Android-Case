@@ -22,18 +22,24 @@ class FreightStatesView : BaseObservable() {
     private val MSG_POINT_START_NOT_FILLED = "Informe o ponto de partida da rota"
     private val MSG_POINT_END_NOT_FILLED = "Informe o ponto final da rota"
 
-
     //Step at the moment
-    private var step : Int = AXIS
+    private var step: Int = AXIS
 
     //Field related to the step of the moment is filled
     private var statesMutable = SingleLiveEvent<FreightStates>()
-    val states : LiveData<FreightStates>
-    get() = statesMutable
-
+    val states: LiveData<FreightStates>
+        get() = statesMutable
 
     @Bindable
-    var numberAxis: Int? = null
+    var showButtonExit: Boolean = false
+        private set(value) {
+            field = value
+            //checkStateNotNull()
+            notifyPropertyChanged(BR.showButtonExit)
+        }
+
+    @Bindable
+    var numberAxis: Int = 0
         set(value) {
             field = value
             //checkStateNotNull()
@@ -41,7 +47,7 @@ class FreightStatesView : BaseObservable() {
         }
 
     @Bindable
-    var pointStart: PointModel? = null
+    var pointStart: PointModel = PointModel(-23.629332,-46.6916186)
         set(value) {
             field = value
             //checkStateNotNull()
@@ -49,7 +55,7 @@ class FreightStatesView : BaseObservable() {
         }
 
     @Bindable
-    var pointEnd: PointModel? = null
+    var pointEnd: PointModel = PointModel(-23.6227534,-46.6714801)
         set(value) {
             field = value
             //checkStateNotNull()
@@ -57,7 +63,7 @@ class FreightStatesView : BaseObservable() {
         }
 
     @Bindable
-    var fuelConsumption: Double? = null
+    var fuelConsumption: Double = 0.0
         set(value) {
             field = value
             //checkStateNotNull()
@@ -65,64 +71,76 @@ class FreightStatesView : BaseObservable() {
         }
 
     @Bindable
-    var fuelPrice: Double? = null
+    var fuelPrice: Double = 0.0
         set(value) {
             field = value
             //checkStateNotNull()
             notifyPropertyChanged(BR.fuelPrice)
         }
 
-
-
-
-    fun nextStep(){
+    fun nextStep() {
         when (step) {
             AXIS -> {
-                /*if (numberAxis == null || numberAxis == 0) {
+                if (numberAxis == null || numberAxis == 0) {
                     statesMutable.postValue(FreightStates.NotReadyToNextStep(MSG_AXIS_NOT_FILLED))
                 } else {
-                    statesMutable.postValue(FreightStates.Next)
                     step = FUEL_PRICE
-                }*/
-                step = FUEL_PRICE
-                statesMutable.postValue(FreightStates.Next(FUEL_PRICE))
+                    statesMutable.postValue(FreightStates.Next(FUEL_PRICE))
+                }
+
             }
 
             FUEL_PRICE -> {
-                /*if (fuelPrice == null || fuelPrice == 0.0) {
-                    statesMutable.postValue(FreightStates.NotReadyToNextStep(MSG_FUEL_PRICE_NOT_FILLED))
+                if (fuelPrice == null || fuelPrice == 0.0) {
+                    statesMutable.postValue(
+                        FreightStates.NotReadyToNextStep(
+                            MSG_FUEL_PRICE_NOT_FILLED
+                        )
+                    )
                 } else {
-                    statesMutable.postValue(FreightStates.Next)
                     step = CONSUMPTION
-                }*/
-                step = CONSUMPTION
-                statesMutable.postValue(FreightStates.Next(CONSUMPTION))
+                    statesMutable.postValue(FreightStates.Next(CONSUMPTION))
+                }
             }
 
             CONSUMPTION -> {
                 if (fuelConsumption == null || fuelConsumption == 0.0) {
-                    statesMutable.postValue(FreightStates.NotReadyToNextStep(MSG_FUEL_CONSUMPTION_NOT_FILLED))
+                    statesMutable.postValue(
+                        FreightStates.NotReadyToNextStep(
+                            MSG_FUEL_CONSUMPTION_NOT_FILLED
+                        )
+                    )
                 } else {
-                    statesMutable.postValue(FreightStates.Next(POINT_START))
                     step = POINT_START
+                    statesMutable.postValue(FreightStates.Next(POINT_START))
                 }
+
             }
 
             POINT_START -> {
                 if (pointStart == null) {
-                    statesMutable.postValue(FreightStates.NotReadyToNextStep(MSG_POINT_START_NOT_FILLED))
+                    statesMutable.postValue(
+                        FreightStates.NotReadyToNextStep(
+                            MSG_POINT_START_NOT_FILLED
+                        )
+                    )
                 } else {
-                    statesMutable.postValue(FreightStates.Next(POINT_END))
                     step = POINT_END
+                    statesMutable.postValue(FreightStates.Next(POINT_END))
                 }
+
             }
 
             POINT_END -> {
                 if (pointEnd == null) {
-                    statesMutable.postValue(FreightStates.NotReadyToNextStep(MSG_POINT_END_NOT_FILLED))
+                    statesMutable.postValue(
+                        FreightStates.NotReadyToNextStep(
+                            MSG_POINT_END_NOT_FILLED
+                        )
+                    )
                 } else {
-                    statesMutable.postValue(FreightStates.Next(RESUME))
                     step = RESUME
+                    statesMutable.postValue(FreightStates.Next(RESUME))
                 }
             }
 
@@ -136,30 +154,31 @@ class FreightStatesView : BaseObservable() {
         when (step) {
             RESUME -> {
                 step = POINT_END
-                statesMutable.postValue(FreightStates.Back)
+                statesMutable.postValue(FreightStates.Back(POINT_END))
             }
 
             POINT_END -> {
                 step = POINT_START
-                statesMutable.postValue(FreightStates.Back)
+                statesMutable.postValue(FreightStates.Back(POINT_START))
             }
 
             POINT_START -> {
                 step = CONSUMPTION
-                statesMutable.postValue(FreightStates.Back)
+                statesMutable.postValue(FreightStates.Back(CONSUMPTION))
             }
 
             CONSUMPTION -> {
                 step = FUEL_PRICE
-                statesMutable.postValue(FreightStates.Back)
+                statesMutable.postValue(FreightStates.Back(FUEL_PRICE))
             }
 
             FUEL_PRICE -> {
                 step = AXIS
-                statesMutable.postValue(FreightStates.Back)
+                statesMutable.postValue(FreightStates.Back(AXIS))
             }
 
             AXIS -> {
+                //talvez mandar aqui um status para mostrar o botao sair
             }
         }
     }
