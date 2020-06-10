@@ -15,12 +15,10 @@ class MoneyTextWatcher : TextWatcher {
     private var campo: TextView
     private var valorString: String = ""
     private var valorDouble = 0.0
-    private var listener: InverseBindingListener
     private var isUpdating = false
 
-    constructor(campo: TextView, listener: InverseBindingListener) {
+    constructor(campo: TextView) {
         this.campo = campo
-        this.listener = listener
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {}
@@ -37,8 +35,8 @@ class MoneyTextWatcher : TextWatcher {
         try {
             valorDouble = valorString.removeSymbolMoney().noFormatedToDoble()
             valorString = valorDouble.toMoney()
-            listener.onChange()
-            campo.setText(valorString)
+
+            campo.text = valorString
             if(campo is EditText){
                (campo as EditText).setSelection(valorString.length)
             }

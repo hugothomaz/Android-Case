@@ -26,49 +26,115 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/btBack"
+            app:layout_constraintBottom_toTopOf="@+id/container_bt_left"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/page_stepper" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btBack"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_bt_left"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            app:icon="@drawable/ic_back_step"
-            app:iconGravity="textStart"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="16dp"
-            android:text="Voltar"
-            android:onClick="@{() -> viewModel.statesView.backStep()}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:layout_constraintEnd_toStartOf="@+id/container_bt_right"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button2"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btExit"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:onClick="@{() -> viewModel.statesView.backStep()}"
+                android:text="Sair"
+                android:visibility="@{viewModel.statesView.showButtonExit ? View.VISIBLE : View.GONE}"
+                app:icon="@drawable/ic_exit"
+                app:iconGravity="textStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btBack"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:onClick="@{() -> viewModel.statesView.backStep()}"
+                android:text="Voltar"
+                android:visibility="@{viewModel.statesView.showButtonExit ? View.GONE : View.VISIBLE }"
+                app:icon="@drawable/ic_back_step"
+                app:iconGravity="textStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_bt_right"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:icon="@drawable/ic_next_step"
-            app:iconGravity="textEnd"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Próximo"
-            android:onClick="@{() -> viewModel.next()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btBack" />
+            app:layout_constraintStart_toEndOf="@+id/container_bt_left">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btNext"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:onClick="@{() -> viewModel.next()}"
+                android:text="Próximo"
+                android:visibility="@{viewModel.statesView.showButtonCalc ? View.GONE : View.VISIBLE }"
+                app:icon="@drawable/ic_next_step"
+                app:iconGravity="textEnd"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btCalc"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:onClick="@{() -> viewModel.next()}"
+                android:text="Calcular"
+                android:visibility="@{viewModel.statesView.showButtonCalc ? View.VISIBLE : View.GONE }"
+                app:icon="@drawable/ic_calc"
+                app:iconGravity="textEnd"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <data>
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.hugothomaz.rotafrete.screen.freight.FreightViewModel" />

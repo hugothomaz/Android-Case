@@ -49,11 +49,12 @@ object FreightBindingAdapter {
             override fun afterTextChanged(p0: Editable?) {
                 listener.onChange()
                 p0?.let {
-                    if(editText is EditText){
+                    if (editText is EditText) {
                         editText.setSelection(p0.length)
                     }
                 }
             }
+
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
@@ -62,29 +63,27 @@ object FreightBindingAdapter {
 
     //** Money **
     @JvmStatic
-    @BindingAdapter(value = ["bindMoney"], requireAll = false)
+    @BindingAdapter(value = ["app:bindMoney"], requireAll = false)
     fun bindMoney(
-        textView: TextView, textDouble: Double /*temos que entrar com texto, la no viewmodel ja conrter para texto*/
+        textView: TextView?, textDouble: Double?
     ) {
-        if(textView.text.toString().isNotEmpty()){
-            val oldText = textView.text.toString().moneyToDouble()
+        if (textView?.text.toString().isNotEmpty()) {
+            val oldText = textView?.text.toString().moneyToDouble()
             textDouble.let { textD ->
                 if (textD != null || oldText != 0.0) {
-                    if (!textD.toString().equals(oldText.toString())) {
-                        val money = textDouble.toMoney()
-                        textView.text = money
-                    }
+                    val money = textDouble?.toMoney()
+                    textView?.text = money
                 }
             }
         }
     }
 
-    @InverseBindingAdapter(attribute = "bindMoney")
+    /*@InverseBindingAdapter(attribute = "bindMoney")
     @JvmStatic
     fun getBindMoney(textView: TextView): Double {
         if (textView.text.isNotEmpty()) {
             val value = textView.text.toString()
-            return value.noFormatedToDoble()
+            return value.removeSymbolMoney().toDouble() / 100
         } else {
             return 0.0
         }
@@ -94,7 +93,7 @@ object FreightBindingAdapter {
     @BindingAdapter("bindMoneyAttrChanged")
     fun setTextInputMoneyChangeListener(editText: TextView, listener: InverseBindingListener) {
         editText.addTextChangedListener(MoneyTextWatcher(editText, listener))
-    }
+    }*/
 
 
     //** Int **
@@ -131,11 +130,12 @@ object FreightBindingAdapter {
             override fun afterTextChanged(p0: Editable?) {
                 listener.onChange()
                 p0?.let {
-                    if(editText is EditText){
+                    if (editText is EditText) {
                         editText.setSelection(p0.length)
                     }
                 }
             }
+
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })

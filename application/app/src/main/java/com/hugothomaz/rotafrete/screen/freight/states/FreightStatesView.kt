@@ -36,7 +36,15 @@ class FreightStatesView : BaseObservable() {
         get() = statesMutable
 
     @Bindable
-    var showButtonExit: Boolean = false
+    var showButtonCalc: Boolean = false
+        private set(value) {
+            field = value
+            //checkStateNotNull()
+            notifyPropertyChanged(BR.showButtonCalc)
+        }
+
+    @Bindable
+    var showButtonExit: Boolean = true
         private set(value) {
             field = value
             //checkStateNotNull()
@@ -71,6 +79,7 @@ class FreightStatesView : BaseObservable() {
                     statesMutable.postValue(FreightStates.NotReadyToNextStep(MSG_AXIS_NOT_FILLED))
                 } else {
                     step = FUEL_PRICE
+                    showButtonExit = false
                     statesMutable.postValue(FreightStates.Next(FUEL_PRICE))
                 }
             }
@@ -125,6 +134,7 @@ class FreightStatesView : BaseObservable() {
                     )
                 } else {
                     step = RESUME
+                    showButtonCalc = true
                     statesMutable.postValue(FreightStates.Next(RESUME))
                 }
             }
@@ -139,6 +149,7 @@ class FreightStatesView : BaseObservable() {
         when (step) {
             RESUME -> {
                 step = POINT_END
+                showButtonCalc = false
                 statesMutable.postValue(FreightStates.Back(POINT_END))
             }
 
@@ -159,10 +170,12 @@ class FreightStatesView : BaseObservable() {
 
             FUEL_PRICE -> {
                 step = AXIS
+                showButtonExit = true
                 statesMutable.postValue(FreightStates.Back(AXIS))
             }
 
             AXIS -> {
+
                 //talvez mandar aqui um status para mostrar o botao sair
             }
         }
