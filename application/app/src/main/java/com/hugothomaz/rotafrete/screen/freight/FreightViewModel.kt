@@ -35,8 +35,8 @@ class FreightViewModel(
         states.run {
             calcFreightUseCase.execute(
                 RouterModel(
-                    pointModelStart = statesView.pointStart.value!!,
-                    pointModelEnd = statesView.pointEnd.value!!,
+                    pointModelStart = statesView.pointStart!!,
+                    pointModelEnd = statesView.pointEnd!!,
                     axis = statesView.numberAxis ?: 0,
                     fuelConsumption = statesView.fuelConsumption,
                     fuelPrice = statesView.fuelPrice
@@ -61,17 +61,17 @@ class FreightViewModel(
 
     fun addPoint(latLng: LatLng, operation: OperationPointEnum) {
         if (operation.equals(OperationPointEnum.OPERATION_START)) {
-            statesView.pointStart.postValue(PointModel(latLng.latitude, latLng.longitude))
+            statesView.pointStart = PointModel(latLng.latitude, latLng.longitude)
         } else if (operation.equals(OperationPointEnum.OPERATION_END)) {
-            statesView.pointEnd.postValue(PointModel(latLng.latitude, latLng.longitude))
+            statesView.pointEnd = PointModel(latLng.latitude, latLng.longitude)
         }
     }
 
     fun removePoint(operation: OperationPointEnum) {
         if (operation.equals(OperationPointEnum.OPERATION_START)) {
-            statesView.pointStart.postValue(null)
+            statesView.pointStart = null
         } else if (operation.equals(OperationPointEnum.OPERATION_END)) {
-            statesView.pointEnd.postValue(null)
+            statesView.pointEnd = null
         }
     }
 

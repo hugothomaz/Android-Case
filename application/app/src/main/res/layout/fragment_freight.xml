@@ -111,7 +111,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btCalc"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:onClick="@{() -> viewModel.next()}"

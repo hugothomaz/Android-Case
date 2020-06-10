@@ -59,9 +59,9 @@ class FreightStatesView : BaseObservable() {
             notifyPropertyChanged(BR.numberAxis)
         }
 
-    val pointStart = MutableLiveData<PointModel>()
+    var pointStart : PointModel ?= null
 
-    val pointEnd = MutableLiveData<PointModel>()
+    var pointEnd : PointModel ?= null
 
     @Bindable
     var fuelConsumption: Double = 0.0

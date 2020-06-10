@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -30,11 +29,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_point_fragment),
     OnMapReadyCallback, OnMapLongClickListener, OnMapClickListener {
-
-    companion object {
-        const val OPERATION_START = "start"
-        const val OPERATION_END = "end"
-    }
 
 
     private val TAG = "TesteMapa"
@@ -71,12 +65,25 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMaps = googleMap
-        clickMap()
+        if (operation.equals(OperationPointEnum.OPERATION_END_RESUME) || operation.equals(
+                OperationPointEnum.OPERATION_START_RESUME
+            )
+        ) {
+            googleMaps?.uiSettings?.apply {
+                setAllGesturesEnabled(false)
+                isCompassEnabled = false
+                isZoomGesturesEnabled = false
+            }
+        } else {
+            clickMap()
+        }
+
+
     }
 
     override fun onMapLongClick(latLng: LatLng?) {
         latLng?.let {
-            addMarker(latLng)
+            setPositionToCalcFreight(latLng)
         }
     }
 
@@ -94,30 +101,21 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
     }
 
     private fun bindPosition() {
-        fun handlerPoint(pointModel : PointModel, operation: OperationPointEnum){
-            if(operation.equals(OperationPointEnum.OPERATION_START)){
-                val latLng = LatLng(pointModel.latitude, pointModel.longitude)
-                moveCamera(latLng, ZOOM_DEFAULT)
-                addMarker(latLng)
-            }else{
-                val latLng = LatLng(pointModel.latitude, pointModel.longitude)
+        if (operation.equals(OperationPointEnum.OPERATION_START) || operation.equals(OperationPointEnum.OPERATION_START_RESUME)) {
+            viewModel.statesView.pointStart?.let {
+                val latLng = LatLng(it.latitude, it.longitude)
                 moveCamera(latLng, ZOOM_DEFAULT)
                 addMarker(latLng)
             }
         }
 
-        viewModel.statesView.pointStart.observe(this@FragmentPoint.viewLifecycleOwner, Observer {
-            it?.let {
-                handlerPoint(it, operation)
+        if (operation.equals(OperationPointEnum.OPERATION_END) || operation.equals(OperationPointEnum.OPERATION_END_RESUME)) {
+            viewModel.statesView.pointEnd?.let {
+                val latLng = LatLng(it.latitude, it.longitude)
+                moveCamera(latLng, ZOOM_DEFAULT)
+                addMarker(latLng)
             }
-
-        })
-
-        viewModel.statesView.pointEnd.observe(this@FragmentPoint.viewLifecycleOwner, Observer {
-            it?.let {
-                handlerPoint(it, operation)
-            }
-        })
+        }
     }
 
     private fun getDeviceLocation() {
@@ -154,19 +152,24 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
     }
 
     private fun addMarker(latLng: LatLng) {
-        if (isMarker) {
+        if (isMarker && (!operation.equals(OperationPointEnum.OPERATION_START_RESUME) || !operation.equals(
+                OperationPointEnum.OPERATION_END_RESUME
+            ))
+        ) {
             return
         }
+
         val markerOptions = MarkerOptions()
             .position(latLng)
             .title("Start")
 
         googleMaps?.addMarker(markerOptions)
         isMarker = true
-        setPositionToCalcFreight(latLng)
+
     }
 
     private fun setPositionToCalcFreight(latLng: LatLng) {
+        addMarker(latLng)
         viewModel.addPoint(latLng, operation)
     }
 
@@ -244,5 +247,11 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
             }
             .show()*/
     }
+
+    override fun onResume() {
+        super.onResume()
+        bindPosition()
+    }
+
 
 }
