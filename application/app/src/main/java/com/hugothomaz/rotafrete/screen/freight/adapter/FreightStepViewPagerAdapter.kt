@@ -4,6 +4,7 @@ import android.view.MotionEvent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.hugothomaz.domain.model.enums.OperationPointEnum
 import com.hugothomaz.rotafrete.screen.freight.steps.*
 
 
@@ -15,12 +16,15 @@ class FreightStepViewPagerAdapter(fragmentManager: FragmentManager) :
             FragmentAxis(),
             FragmentFuelPrice(),
             FragmentFuelConsumption(),
-            FragmentPoint(),
-            FragmentPoint(),
+            FragmentPoint(OperationPointEnum.OPERATION_START),
+            FragmentPoint(OperationPointEnum.OPERATION_END),
             FragmentResume()
         )
 
 
+    fun getFragment(position : Int) : Fragment{
+        return listFragments.get(position)
+    }
 
     override fun getItem(position: Int): Fragment {
         return listFragments.get(position)

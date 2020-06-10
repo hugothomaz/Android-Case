@@ -3,18 +3,23 @@ package com.hugothomaz.rotafrete.screen.freight.states
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.hugothomaz.domain.model.PointModel
 import com.hugothomaz.rotafrete.BR
 import com.hugothomaz.rotafrete.core.SingleLiveEvent
 
+
 class FreightStatesView : BaseObservable() {
 
-    private val AXIS = 0
-    private val FUEL_PRICE = 1
-    private val CONSUMPTION = 2
-    private val POINT_START = 3
-    private val POINT_END = 4
-    private val RESUME = 5
+    companion object {
+        const val AXIS = 0
+        const val FUEL_PRICE = 1
+        const val CONSUMPTION = 2
+        const val POINT_START = 3
+        const val POINT_END = 4
+        const val RESUME = 5
+    }
+
 
     private val MSG_AXIS_NOT_FILLED = "Informe o número de eixos"
     private val MSG_FUEL_PRICE_NOT_FILLED = "Informe o preço do combustível"
@@ -46,21 +51,9 @@ class FreightStatesView : BaseObservable() {
             notifyPropertyChanged(BR.numberAxis)
         }
 
-    @Bindable
-    var pointStart: PointModel = PointModel(-23.629332,-46.6916186)
-        set(value) {
-            field = value
-            //checkStateNotNull()
-            notifyPropertyChanged(BR.pointStart)
-        }
+    val pointStart = MutableLiveData<PointModel>()
 
-    @Bindable
-    var pointEnd: PointModel = PointModel(-23.6227534,-46.6714801)
-        set(value) {
-            field = value
-            //checkStateNotNull()
-            notifyPropertyChanged(BR.pointEnd)
-        }
+    val pointEnd = MutableLiveData<PointModel>()
 
     @Bindable
     var fuelConsumption: Double = 0.0
@@ -69,12 +62,7 @@ class FreightStatesView : BaseObservable() {
             notifyPropertyChanged(BR.fuelConsumption)
         }
 
-    @Bindable
     var fuelPrice: Double = 0.0
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.fuelPrice)
-        }
 
     fun nextStep() {
         when (step) {
@@ -88,7 +76,7 @@ class FreightStatesView : BaseObservable() {
             }
 
             FUEL_PRICE -> {
-                if (fuelPrice == null || fuelPrice == 0.0) {
+                /*if (fuelPrice == null || fuelPrice == 0.0) {
                     statesMutable.postValue(
                         FreightStates.NotReadyToNextStep(
                             MSG_FUEL_PRICE_NOT_FILLED
@@ -97,7 +85,9 @@ class FreightStatesView : BaseObservable() {
                 } else {
                     step = CONSUMPTION
                     statesMutable.postValue(FreightStates.Next(CONSUMPTION))
-                }
+                }*/
+                step = CONSUMPTION
+                statesMutable.postValue(FreightStates.Next(CONSUMPTION))
             }
 
             CONSUMPTION -> {

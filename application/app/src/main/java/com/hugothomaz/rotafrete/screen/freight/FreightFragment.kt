@@ -1,6 +1,7 @@
 package com.hugothomaz.rotafrete.screen.freight
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,9 @@ import androidx.lifecycle.Observer
 import com.hugothomaz.rotafrete.databinding.FragmentFreightBinding
 import com.hugothomaz.rotafrete.screen.freight.adapter.FreightStepViewPagerAdapter
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStates
+import com.hugothomaz.rotafrete.screen.freight.states.FreightStatesView
+import com.hugothomaz.rotafrete.screen.freight.steps.FragmentFuelPrice
+import com.hugothomaz.rotafrete.screen.freight.steps.ListenerSaveFuelPrice
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,12 +37,6 @@ class FreightFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindViewPager()
         bindViewModel()
-
-        /*viewModel.setPoints(Pair(-23.6238397,-46.6966189), Pair(-23.582421,-46.6396582))
-        viewModel.setAxis(2)
-        viewModel.setFuelConsumption(4.6)
-        viewModel.setFuelPrice(2.5)
-        viewModel.calcFreight()*/
     }
 
     private fun bindViewModel() {
@@ -48,6 +46,22 @@ class FreightFragment : Fragment() {
         viewModel.statesView.states.observe(this@FreightFragment.viewLifecycleOwner, Observer {
             handlerStatus(it)
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("freight_fragment", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("freight_fragment", "onStop")
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("freight_fragment", "onDestroy")
     }
 
     private fun bindViewPager() {
@@ -62,6 +76,12 @@ class FreightFragment : Fragment() {
     private fun handlerStatus(states: FreightStates?) {
         when (states) {
             is FreightStates.Next -> {
+                if(states.stepPosition == FreightStatesView.CONSUMPTION){
+                    viewPager?.let {
+                        val fragment = (it.adapter as FreightStepViewPagerAdapter).getFragment(FreightStatesView.FUEL_PRICE) as FragmentFuelPrice
+                        fragment.getListenerSaveFuelPrice().onSaveFuelPrice()
+                    }
+                }
                 viewPager?.currentItem = states.stepPosition
             }
             is FreightStates.Back -> {

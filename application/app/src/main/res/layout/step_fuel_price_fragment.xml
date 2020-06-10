@@ -21,11 +21,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_fuel_price"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Preço do compustivel"
+                android:hint="Preço do combustível"
                 android:inputType="numberDecimal"
-                app:bindMoney="@={viewModel.statesView.fuelPrice}" />
+                app:bindMoney="@{viewModel.statesView.fuelPrice}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -9,30 +9,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.hugothomaz.domain.model.PointModel
+import com.hugothomaz.domain.model.enums.OperationPointEnum
 import com.hugothomaz.rotafrete.R
 import com.hugothomaz.rotafrete.databinding.StepPointFragmentBinding
 import com.hugothomaz.rotafrete.screen.freight.FreightViewModel
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class FragmentPoint : Fragment(R.layout.step_point_fragment), OnMapReadyCallback {
+
+class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_point_fragment),
+    OnMapReadyCallback, OnMapLongClickListener, OnMapClickListener {
+
+    companion object {
+        const val OPERATION_START = "start"
+        const val OPERATION_END = "end"
+    }
+
+
     private val TAG = "TesteMapa"
+    private val ZOOM_DEFAULT = 15f
 
     private val viewModel by sharedViewModel<FreightViewModel>()
-    private lateinit var bind : StepPointFragmentBinding
+    private lateinit var bind: StepPointFragmentBinding
 
     private var googleMaps: GoogleMap? = null
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
-    private val ZOOM_DEFAULT = 15f
+    private var isMarker = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,40 +64,114 @@ class FragmentPoint : Fragment(R.layout.step_point_fragment), OnMapReadyCallback
         if (isServiceOk()) {
             checkSalePermissions()
         }
+
+        bindPosition()
     }
+
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMaps = googleMap
+        clickMap()
     }
 
-    private fun bindViewModel(){
+    override fun onMapLongClick(latLng: LatLng?) {
+        latLng?.let {
+            addMarker(latLng)
+        }
+    }
+
+    override fun onMapClick(latLng: LatLng?) {
+        googleMaps?.clear()
+        isMarker = false
+        latLng?.let {
+            removePositionToCalcFreight(latLng)
+        }
+
+    }
+
+    private fun bindViewModel() {
         bind.viewModel = viewModel
     }
 
+    private fun bindPosition() {
+        fun handlerPoint(pointModel : PointModel, operation: OperationPointEnum){
+            if(operation.equals(OperationPointEnum.OPERATION_START)){
+                val latLng = LatLng(pointModel.latitude, pointModel.longitude)
+                moveCamera(latLng, ZOOM_DEFAULT)
+                addMarker(latLng)
+            }else{
+                val latLng = LatLng(pointModel.latitude, pointModel.longitude)
+                moveCamera(latLng, ZOOM_DEFAULT)
+                addMarker(latLng)
+            }
+        }
+
+        viewModel.statesView.pointStart.observe(this@FragmentPoint.viewLifecycleOwner, Observer {
+            it?.let {
+                handlerPoint(it, operation)
+            }
+
+        })
+
+        viewModel.statesView.pointEnd.observe(this@FragmentPoint.viewLifecycleOwner, Observer {
+            it?.let {
+                handlerPoint(it, operation)
+            }
+        })
+    }
+
     private fun getDeviceLocation() {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
 
         try {
             if (fusedLocationProviderClient != null) {
                 val taskLocation = fusedLocationProviderClient!!.lastLocation
                 taskLocation.addOnCompleteListener {
                     if (taskLocation.isSuccessful) {
-                        val location = taskLocation.getResult() as Location
-                        moveCamera(LatLng(location.latitude, location.longitude), ZOOM_DEFAULT)
+                        taskLocation.getResult()?.let {
+                            val location = taskLocation.getResult() as Location
+                            moveCamera(LatLng(location.latitude, location.longitude), ZOOM_DEFAULT)
+                        }
+
                     }
                 }
             }
 
         } catch (e: SecurityException) {
-
         }
     }
 
     private fun moveCamera(latLng: LatLng, zoom: Float) {
         googleMaps?.apply {
-            moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
+            val update: CameraUpdate = CameraUpdateFactory.newLatLng(latLng)
+            val zoom: CameraUpdate = CameraUpdateFactory.zoomTo(zoom)
+
+            moveCamera(update)
+            animateCamera(zoom, 2000, null)
             isMyLocationEnabled = true
         }
+    }
+
+    private fun addMarker(latLng: LatLng) {
+        if (isMarker) {
+            return
+        }
+        val markerOptions = MarkerOptions()
+            .position(latLng)
+            .title("Start")
+
+        googleMaps?.addMarker(markerOptions)
+        isMarker = true
+        setPositionToCalcFreight(latLng)
+    }
+
+    private fun setPositionToCalcFreight(latLng: LatLng) {
+        viewModel.addPoint(latLng, operation)
+    }
+
+    private fun removePositionToCalcFreight(latLng: LatLng) {
+        viewModel.removePoint(operation)
     }
 
     private fun initMap() {
@@ -91,13 +179,22 @@ class FragmentPoint : Fragment(R.layout.step_point_fragment), OnMapReadyCallback
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
         getDeviceLocation()
+
+    }
+
+    private fun clickMap() {
+        googleMaps?.apply {
+            setOnMapLongClickListener(this@FragmentPoint)
+            setOnMapClickListener(this@FragmentPoint)
+        }
     }
 
 
     private fun isServiceOk(): Boolean {
         Log.d(TAG, "isServiceOk verifica estado da conexão do servico do google")
 
-        val available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireActivity())
+        val available =
+            GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireActivity())
 
         if (available == ConnectionResult.SUCCESS) {
             Log.d(TAG, "isServiceOk verifica - Success")
