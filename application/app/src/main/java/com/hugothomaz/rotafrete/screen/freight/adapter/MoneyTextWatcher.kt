@@ -3,6 +3,7 @@ package com.hugothomaz.rotafrete.screen.freight.adapter
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import android.widget.TextView
 import androidx.databinding.InverseBindingListener
 import com.hugothomaz.rotafrete.extensions.noFormatedToDoble
 import com.hugothomaz.rotafrete.extensions.removeSymbolMoney
@@ -11,14 +12,13 @@ import com.hugothomaz.rotafrete.extensions.toMoney
 
 class MoneyTextWatcher : TextWatcher {
 
-    private var campo: EditText
+    private var campo: TextView
     private var valorString: String = ""
     private var valorDouble = 0.0
     private var listener: InverseBindingListener
     private var isUpdating = false
 
-
-    constructor(campo: EditText, listener: InverseBindingListener) {
+    constructor(campo: TextView, listener: InverseBindingListener) {
         this.campo = campo
         this.listener = listener
     }
@@ -27,21 +27,22 @@ class MoneyTextWatcher : TextWatcher {
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun afterTextChanged(s: Editable?) {
-        listener.onChange()
-
         if (isUpdating) {
             isUpdating = false
             return
         }
         isUpdating = true
-
         valorString = s.toString()
 
         try {
             valorDouble = valorString.removeSymbolMoney().noFormatedToDoble()
             valorString = valorDouble.toMoney()
+            listener.onChange()
             campo.setText(valorString)
-            campo.setSelection(valorString.length)
+            if(campo is EditText){
+               (campo as EditText).setSelection(valorString.length)
+            }
+
         } catch (e: NumberFormatException) {
             s?.clear()
         }

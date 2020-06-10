@@ -11,9 +11,6 @@ import com.hugothomaz.rotafrete.extensions.moneyToDouble
 import com.hugothomaz.rotafrete.extensions.noFormatedToDoble
 import com.hugothomaz.rotafrete.extensions.removeSymbolMoney
 import com.hugothomaz.rotafrete.extensions.toMoney
-import org.joda.money.CurrencyUnit
-import org.joda.money.Money
-import java.util.*
 
 object FreightBindingAdapter {
 
@@ -26,7 +23,7 @@ object FreightBindingAdapter {
         val oldText = textView.text
 
         (textDouble / 100).let { text ->
-            if (text.toString() !== oldText && (text != null || oldText.length != 0)) {
+            if (text.toString() != oldText && (text != null || oldText.length != 0)) {
                 if (!text.toString().equals(oldText.toString())) {
                     textView.text = text.toString()
                 }
@@ -72,7 +69,7 @@ object FreightBindingAdapter {
         if(textView.text.toString().isNotEmpty()){
             val oldText = textView.text.toString().moneyToDouble()
             textDouble.let { textD ->
-                if (textD !== oldText && (textD != null || oldText != 0.0)) {
+                if (textD != null || oldText != 0.0) {
                     if (!textD.toString().equals(oldText.toString())) {
                         val money = textDouble.toMoney()
                         textView.text = money
@@ -84,7 +81,7 @@ object FreightBindingAdapter {
 
     @InverseBindingAdapter(attribute = "bindMoney")
     @JvmStatic
-    fun getMoney(textView: TextView): Double {
+    fun getBindMoney(textView: TextView): Double {
         if (textView.text.isNotEmpty()) {
             val value = textView.text.toString()
             return value.noFormatedToDoble()
@@ -96,7 +93,7 @@ object FreightBindingAdapter {
     @JvmStatic
     @BindingAdapter("bindMoneyAttrChanged")
     fun setTextInputMoneyChangeListener(editText: TextView, listener: InverseBindingListener) {
-        editText.addTextChangedListener(MoneyTextWatcher(editText as EditText, listener))
+        editText.addTextChangedListener(MoneyTextWatcher(editText, listener))
     }
 
 
@@ -108,7 +105,7 @@ object FreightBindingAdapter {
     ) {
         val oldText = textView.text
         textInt.let { text ->
-            if (text.toString() !== oldText && (text != null || oldText.length != 0)) {
+            if (text.toString() != oldText && (text != null || oldText.length != 0)) {
                 if (!text.toString().equals(oldText.toString())) {
                     textView.text = text.toString()
                 }

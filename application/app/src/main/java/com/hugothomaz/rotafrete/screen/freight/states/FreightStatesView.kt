@@ -66,7 +66,6 @@ class FreightStatesView : BaseObservable() {
     var fuelConsumption: Double = 0.0
         set(value) {
             field = value
-            //checkStateNotNull()
             notifyPropertyChanged(BR.fuelConsumption)
         }
 
@@ -74,7 +73,6 @@ class FreightStatesView : BaseObservable() {
     var fuelPrice: Double = 0.0
         set(value) {
             field = value
-            //checkStateNotNull()
             notifyPropertyChanged(BR.fuelPrice)
         }
 
@@ -87,7 +85,6 @@ class FreightStatesView : BaseObservable() {
                     step = FUEL_PRICE
                     statesMutable.postValue(FreightStates.Next(FUEL_PRICE))
                 }
-
             }
 
             FUEL_PRICE -> {
@@ -114,7 +111,6 @@ class FreightStatesView : BaseObservable() {
                     step = POINT_START
                     statesMutable.postValue(FreightStates.Next(POINT_START))
                 }
-
             }
 
             POINT_START -> {
@@ -128,7 +124,6 @@ class FreightStatesView : BaseObservable() {
                     step = POINT_END
                     statesMutable.postValue(FreightStates.Next(POINT_END))
                 }
-
             }
 
             POINT_END -> {
