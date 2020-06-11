@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -13,6 +14,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.snackbar.Snackbar
 import com.hugothomaz.rotafrete.R
 import com.hugothomaz.rotafrete.databinding.FragmentFreightBinding
 import com.hugothomaz.rotafrete.screen.freight.adapter.FreightStepViewPagerAdapter
@@ -103,10 +105,35 @@ class FreightFragment : Fragment() {
                 navController?.popBackStack()
             }
             is FreightStates.NotReadyToNextStep -> {
+                showMessage(states.message)
             }
             is FreightStates.Error -> {
             }
 
+        }
+    }
+
+    private fun showMessage(@StringRes stringID : Int, isIndefinite : Boolean = false) {
+        showMessage(getString(stringID), isIndefinite)
+    }
+
+    private fun showMessage(message : String, isIndefinite : Boolean = false) {
+        activity?.let {
+            val snack = Snackbar.make(
+                it.findViewById(android.R.id.content),
+                message,
+                Snackbar.LENGTH_INDEFINITE
+            )
+
+            if(isIndefinite){
+                snack.setAction("OK") {
+                    snack.dismiss()
+                }
+            }else{
+                snack.duration = Snackbar.LENGTH_LONG
+            }
+
+            snack.show()
         }
     }
 
