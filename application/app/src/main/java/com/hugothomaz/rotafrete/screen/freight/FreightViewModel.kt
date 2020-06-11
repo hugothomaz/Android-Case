@@ -20,7 +20,7 @@ class FreightViewModel(
     private val calcFreightUseCase: CalcFreightUseCase
 ) : ViewModel() {
 
-    val statesView: FreightStatesView = FreightStatesView()
+    var statesView: FreightStatesView = FreightStatesView()
 
     private val freightModelMutableLiveData = MutableLiveData<FreightModel>()
     val freightModelLiveData: LiveData<FreightModel>
@@ -30,6 +30,9 @@ class FreightViewModel(
     val states: LiveData<FreightStates>
         get() = statesMutableLiveData
 
+    fun check(){
+        statesMutableLiveData.postValue(FreightStates.ToCalc)
+    }
 
     fun calcFreight() {
         states.run {
@@ -80,7 +83,9 @@ class FreightViewModel(
     }
 
     fun onDestroy(){
-
+        statesView = FreightStatesView()
+        freightModelMutableLiveData.postValue(null)
+        statesMutableLiveData.postValue(null)
     }
 
 }

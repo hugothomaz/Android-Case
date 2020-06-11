@@ -7,6 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import com.hugothomaz.rotafrete.R
 import com.hugothomaz.rotafrete.databinding.FragmentFreightBinding
 import com.hugothomaz.rotafrete.screen.freight.adapter.FreightStepViewPagerAdapter
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStates
@@ -21,8 +28,8 @@ class FreightFragment : Fragment() {
 
     private lateinit var binding: FragmentFreightBinding
     private val viewModel by sharedViewModel<FreightViewModel>()
-
     private var viewPager: ViewPagerFreight? = null
+    private var navController: NavController? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,37 +44,36 @@ class FreightFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindViewPager()
         bindViewModel()
+        observableViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navController = NavHostFragment.findNavController(this)
     }
 
     private fun bindViewModel() {
-        binding.viewModel =
-            viewModel //la tratar, criar algum binding para fazer algo quando mover a tela, para mover a tela
+        binding.viewModel = viewModel
+    }
 
+    private fun observableViewModel(){
         viewModel.statesView.states.observe(this@FreightFragment.viewLifecycleOwner, Observer {
+            handlerStatus(it)
+        })
+        viewModel.states.observe(this@FreightFragment.viewLifecycleOwner, Observer {
             handlerStatus(it)
         })
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d("freight_fragment", "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("freight_fragment", "onStop")
-    }
-
-
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("freight_fragment", "onDestroy")
+        viewModel.onDestroy()
     }
 
     private fun bindViewPager() {
         val indicator = binding.pageStepper
         viewPager = binding.viewPagerFreight
-        viewPager?.let{
+        viewPager?.let {
             it.adapter = FreightStepViewPagerAdapter(childFragmentManager)
             indicator.setupWithViewPager(it)
         }
@@ -75,10 +81,16 @@ class FreightFragment : Fragment() {
 
     private fun handlerStatus(states: FreightStates?) {
         when (states) {
+            is FreightStates.ToCalc -> {
+                val action = FreightFragmentDirections.actionFreightToCalcResultFreight()
+                navController?.navigate(action)
+            }
             is FreightStates.Next -> {
-                if(states.stepPosition == FreightStatesView.CONSUMPTION){
+                if (states.stepPosition == FreightStatesView.CONSUMPTION) {
                     viewPager?.let {
-                        val fragment = (it.adapter as FreightStepViewPagerAdapter).getFragment(FreightStatesView.FUEL_PRICE) as FragmentFuelPrice
+                        val fragment = (it.adapter as FreightStepViewPagerAdapter).getFragment(
+                            FreightStatesView.FUEL_PRICE
+                        ) as FragmentFuelPrice
                         fragment.getListenerSaveFuelPrice().onSaveFuelPrice()
                     }
                 }
@@ -87,6 +99,9 @@ class FreightFragment : Fragment() {
             is FreightStates.Back -> {
                 viewPager?.currentItem = states.stepPosition
             }
+            is FreightStates.Exit -> {
+                navController?.popBackStack()
+            }
             is FreightStates.NotReadyToNextStep -> {
             }
             is FreightStates.Error -> {
@@ -94,5 +109,6 @@ class FreightFragment : Fragment() {
 
         }
     }
+
 
 }

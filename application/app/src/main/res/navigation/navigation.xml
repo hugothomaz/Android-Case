@@ -19,12 +19,24 @@
             app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
-
     <fragment
         android:id="@+id/freight_fragment"
         android:name="com.hugothomaz.rotafrete.screen.freight.FreightFragment"
         android:label="Fragment Freight"
         tools:layout="@layout/fragment_freight">
+        <action android:id="@+id/action_freight_to_calc_result_freight"
+            app:destination="@id/result_calc_freight_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/result_calc_freight_fragment"
+        android:name="com.hugothomaz.rotafrete.screen.freight.ResultCalcFreightFragment"
+        android:label="Fragment Freight"
+        tools:layout="@layout/fragment_result_calc_freight">
     </fragment>
 
 </navigation>

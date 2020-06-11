@@ -52,6 +52,14 @@ class FreightStatesView : BaseObservable() {
         }
 
     @Bindable
+    var showButtonNext: Boolean = true
+        private set(value) {
+            field = value
+            //checkStateNotNull()
+            notifyPropertyChanged(BR.showButtonNext)
+        }
+
+    @Bindable
     var numberAxis: Int = 0
         set(value) {
             field = value
@@ -134,7 +142,13 @@ class FreightStatesView : BaseObservable() {
                     )
                 } else {
                     step = RESUME
-                    showButtonCalc = true
+                    if(checkStateNotNull()){
+                        showButtonCalc = true
+                    }else{
+                        showButtonCalc = false
+                        showButtonNext = false
+                    }
+
                     statesMutable.postValue(FreightStates.Next(RESUME))
                 }
             }
@@ -150,6 +164,7 @@ class FreightStatesView : BaseObservable() {
             RESUME -> {
                 step = POINT_END
                 showButtonCalc = false
+                showButtonNext = true
                 statesMutable.postValue(FreightStates.Back(POINT_END))
             }
 
@@ -175,10 +190,14 @@ class FreightStatesView : BaseObservable() {
             }
 
             AXIS -> {
-
+                statesMutable.postValue(FreightStates.Exit)
                 //talvez mandar aqui um status para mostrar o botao sair
             }
         }
+    }
+
+    private fun checkStateNotNull() : Boolean{
+        return numberAxis != 0 && pointStart != null && pointEnd != null && fuelConsumption != 0.0 && fuelPrice != 0.0
     }
 
 }
