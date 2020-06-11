@@ -1,6 +1,7 @@
 package com.hugothomaz.domain.model
 
 import com.hugothomaz.domain.model.enums.DistanceUnitEnum
+import com.hugothomaz.domain.model.enums.DurationUnit
 import com.hugothomaz.domain.model.enums.MoneyUnitEnum
 import com.hugothomaz.domain.model.enums.VolumeUnitEnum
 import java.util.*

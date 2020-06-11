@@ -2,8 +2,9 @@ package com.hugothomaz.data.mapper
 
 import com.hugothomaz.data.cloud.response.freight.FreightPriceResponse
 import com.hugothomaz.data.cloud.response.router.RouterResponse
-import com.hugothomaz.domain.model.DurationUnit
+import com.hugothomaz.domain.model.enums.DurationUnit
 import com.hugothomaz.domain.model.FreightModel
+import com.hugothomaz.domain.model.RouterModel
 import com.hugothomaz.domain.model.TypeOfCargoModel
 import com.hugothomaz.domain.model.enums.DistanceUnitEnum
 import com.hugothomaz.domain.model.enums.MoneyUnitEnum

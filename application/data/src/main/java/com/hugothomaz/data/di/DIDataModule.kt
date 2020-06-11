@@ -1,11 +1,15 @@
 package com.hugothomaz.data.di
 
+import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hugothomaz.data.BuildConfig
 import com.hugothomaz.data.cloud.AppCloud
 import com.hugothomaz.data.cloud.GEOApi
 import com.hugothomaz.data.cloud.FreightAPI
+import com.hugothomaz.data.local.DB_NAME
+import com.hugothomaz.data.local.FreightLocal
+import com.hugothomaz.data.local.RotaFreteDatabase
 import com.hugothomaz.data.repository.FreightRepository
 import com.hugothomaz.domain.repository.IFreightRepository
 import okhttp3.OkHttpClient
@@ -18,6 +22,25 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val dataModule = module {
+
+    //RotaFreteDatabase
+    single {
+        Room.databaseBuilder(
+            get(), RotaFreteDatabase::class.java,
+            DB_NAME
+        )
+            .build()
+    }
+
+    // DAOs
+    single {
+        get<RotaFreteDatabase>().freightDao()
+    }
+
+    // Local
+    single {
+        FreightLocal(dao = get())
+    }
 
     single { provideGson() }
 
@@ -38,7 +61,7 @@ val dataModule = module {
 
     single { AppCloud(get<GEOApi>(), get<FreightAPI>()) }
 
-    single<IFreightRepository> { FreightRepository(get()) }
+    single<IFreightRepository> { FreightRepository(appCloud =  get(), local = get()) }
 
 }
 

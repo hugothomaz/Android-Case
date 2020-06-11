@@ -1,4 +1,4 @@
-package com.hugothomaz.domain.model
+package com.hugothomaz.domain.model.enums
 
 enum class DurationUnit(val durationUnit: String) {
 
