@@ -16,18 +16,18 @@ class FeirghtResponseToModelMapper : IMapper<Pair<RouterResponse, FreightPriceRe
         return FreightModel(
             distance = pair.first.distance,
             date = Date(),
-            distanceUnit = DistanceUnitEnum.valueOf(pair.first.distanceUnit),
+            distanceUnit = DistanceUnitEnum.valueOf(pair.first.distanceUnit.toUpperCase()),
             duration = pair.first.duration,
-            durationUnit = DurationUnit.valueOf(pair.first.durationUnit),
+            durationUnit = DurationUnit.valueOf(pair.first.durationUnit.toUpperCase()),
             fuelCost = pair.first.fuelCost,
-            fuelMoneyUnit = MoneyUnitEnum.valueOf(pair.first.fuelUsageUnit),
+            fuelMoneyUnit = MoneyUnitEnum.valueOf(pair.first.fuelCostUnit.toUpperCase()),
             fuelUsed = pair.first.fuelUsage,
             hasToll = pair.first.hasTolls,
             tollCost = pair.first.tollCost,
             tollCount = pair.first.tollCount,
-            tollMoneyUnit = MoneyUnitEnum.valueOf(pair.first.tollCostUnit),
+            tollMoneyUnit = MoneyUnitEnum.valueOf(pair.first.tollCostUnit.toUpperCase()),
             totalCost = pair.first.totalCost,
-            fuelUseUnit = VolumeUnitEnum.valueOf(pair.first.fuelCostUnit),
+            fuelUseUnit = VolumeUnitEnum.valueOf(pair.first.fuelUsageUnit.toUpperCase()),
             typeOfCargoModel = mapperFreightModel(pair.second)
         )
     }

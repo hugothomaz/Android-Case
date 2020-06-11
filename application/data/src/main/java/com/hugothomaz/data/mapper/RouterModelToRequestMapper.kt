@@ -13,14 +13,14 @@ class RouterModelToRequestMapper : IMapper<RouterModel, RouterRequest> {
             placeRequests = arrayListOf(
                 PlaceRequest(
                     arrayListOf(
-                        entity.pointModelStart.latitude,
-                        entity.pointModelStart.longitude
+                        entity.pointModelStart.longitude,
+                        entity.pointModelStart.latitude
                     )
                 ),
                 PlaceRequest(
                     arrayListOf(
-                        entity.pointModelEnd.latitude,
-                        entity.pointModelEnd.longitude
+                        entity.pointModelEnd.longitude,
+                        entity.pointModelEnd.latitude
                     )
                 )
             )
