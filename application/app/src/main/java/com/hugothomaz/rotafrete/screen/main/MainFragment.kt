@@ -31,6 +31,29 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindViewModel()
         observableStatesActionViewModel()
+        //setToolbar()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setToolbar()
+
+    }
+
+    private fun setToolbar(){
+        (activity as MainActivity).apply {
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(false)
+                setHomeButtonEnabled(false)
+            }
+
+            getToolbar()?.apply {
+                setTitle("Rota Frete")
+
+
+            }
+
+        }
     }
 
     private fun bindViewModel() {

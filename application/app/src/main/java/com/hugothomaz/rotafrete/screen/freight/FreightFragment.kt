@@ -2,19 +2,24 @@ package com.hugothomaz.rotafrete.screen.freight
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toolbar
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.hugothomaz.rotafrete.databinding.FragmentFreightBinding
 import com.hugothomaz.rotafrete.screen.freight.adapter.FreightStepViewPagerAdapter
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStates
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStatesView
 import com.hugothomaz.rotafrete.screen.freight.steps.FragmentFuelPrice
+import com.hugothomaz.rotafrete.screen.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -36,6 +41,7 @@ class FreightFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         bindViewPager()
         bindViewModel()
         observableViewModel()
@@ -43,8 +49,12 @@ class FreightFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        setToolbar()
         navController = NavHostFragment.findNavController(this)
     }
+
+
+
 
     private fun bindViewModel() {
         binding.viewModel = viewModel
@@ -126,5 +136,31 @@ class FreightFragment : Fragment() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> {
+                val action = FreightFragmentDirections.freightToMain()
+                navController?.navigate(action)
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun setToolbar(){
+        (activity as MainActivity).apply {
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setHomeButtonEnabled(true)
+            }
+
+            getToolbar()?.apply {
+                setTitle("Calculo do Frete")
+
+
+            }
+
+        }
+    }
 
 }
