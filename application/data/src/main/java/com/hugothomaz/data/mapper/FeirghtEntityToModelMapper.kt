@@ -3,10 +3,8 @@ package com.hugothomaz.data.mapper
 import com.hugothomaz.data.local.entity.FreightEntity
 import com.hugothomaz.domain.model.enums.DurationUnit
 import com.hugothomaz.domain.model.FreightModel
-import com.hugothomaz.domain.model.RouterModel
 import com.hugothomaz.domain.model.TypeOfCargoModel
 import com.hugothomaz.domain.model.enums.DistanceUnitEnum
-import com.hugothomaz.domain.model.enums.MoneyUnitEnum
 import com.hugothomaz.domain.model.enums.VolumeUnitEnum
 
 class FeirghtEntityToModelMapper : IMapper<FreightEntity, FreightModel> {
@@ -21,11 +19,11 @@ class FeirghtEntityToModelMapper : IMapper<FreightEntity, FreightModel> {
             hasToll = entity.hasToll,
             tollCost = entity.tollCost,
             tollCount = entity.tollCount,
-            tollMoneyUnit = MoneyUnitEnum.valueOf(entity.tollMoneyUnit.toUpperCase()),
+            tollMoneyUnit = entity.tollMoneyUnit,
             fuelUsed = entity.fuelUsed,
             fuelUseUnit = VolumeUnitEnum.valueOf(entity.fuelUseUnit.toUpperCase()),
             fuelCost = entity.fuelCost,
-            fuelMoneyUnit = MoneyUnitEnum.valueOf(entity.fuelMoneyUnit.toUpperCase()),
+            fuelMoneyUnit = entity.tollMoneyUnit,
             totalCost = entity.totalCost,
             typeOfCargoModel = TypeOfCargoModel(
                 frigorificada = entity.frigorificada,

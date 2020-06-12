@@ -107,9 +107,6 @@ class FreightFragment : Fragment() {
             is FreightStates.NotReadyToNextStep -> {
                 showMessage(states.message)
             }
-            is FreightStates.Error -> {
-                showMessage(states.message, true)
-            }
         }
     }
 

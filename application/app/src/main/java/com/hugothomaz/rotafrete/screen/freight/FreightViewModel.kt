@@ -46,7 +46,6 @@ class FreightViewModel(
                 ),
                 hasReturnShipment = true
             )
-                .subscribeOn(Schedulers.io())
                 .subscribe(
                     { it ->
                         Log.d("app_subscribe", it.distance.toString())

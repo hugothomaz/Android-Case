@@ -8,7 +8,6 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.hugothomaz.rotafrete.extensions.moneyToDouble
-import com.hugothomaz.rotafrete.extensions.noFormatedToDoble
 import com.hugothomaz.rotafrete.extensions.removeSymbolMoney
 import com.hugothomaz.rotafrete.extensions.toMoney
 
@@ -98,7 +97,7 @@ object FreightBindingAdapter {
 
     //** Int **
     @JvmStatic
-    @BindingAdapter(value = ["bindTextInt"], requireAll = false)
+    @BindingAdapter(value = ["bindTextAxis"], requireAll = false)
     fun setTextInputInt(
         textView: TextView, textInt: Int
     ) {
@@ -112,7 +111,7 @@ object FreightBindingAdapter {
         }
     }
 
-    @InverseBindingAdapter(attribute = "bindTextInt")
+    @InverseBindingAdapter(attribute = "bindTextAxis")
     @JvmStatic
     fun getTextInputInt(textView: TextView): Int {
         if (textView.text.isNotEmpty()) {
@@ -124,16 +123,35 @@ object FreightBindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("bindTextIntAttrChanged")
+    @BindingAdapter("bindTextAxisAttrChanged")
     fun setTextInputIntChangeListener(editText: TextView, listener: InverseBindingListener) {
+        var isUpdating = false
         editText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-                listener.onChange()
-                p0?.let {
-                    if (editText is EditText) {
-                        editText.setSelection(p0.length)
-                    }
+            override fun afterTextChanged(editable: Editable?) {
+                if (isUpdating) {
+                    isUpdating = false
+                    return
                 }
+                isUpdating = true
+
+                try {
+                    val newValueInt = editText.text.toString()
+                    val size = newValueInt.length
+                    val value = newValueInt[size-1].toString()
+                    if(value.matches(Regex("[0-9]"))){
+                        editText.setText(value)
+                    }
+                    editable?.let {
+                        if (editText is EditText) {
+                            editText.setSelection(value.length)
+                        }
+                    }
+                }catch (e : Exception){
+                    e.printStackTrace()
+                }
+
+                listener.onChange()
+
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}

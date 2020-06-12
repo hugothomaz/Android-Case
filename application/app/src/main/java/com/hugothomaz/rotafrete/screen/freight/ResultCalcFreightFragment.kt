@@ -26,7 +26,7 @@ class ResultCalcFreightFragment : Fragment(R.layout.fragment_result_calc_freight
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.calcFreight()
     }
 
 

@@ -12,6 +12,8 @@ import com.hugothomaz.domain.model.RouterModel
 import com.hugothomaz.domain.repository.IFreightRepository
 import io.reactivex.Maybe
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class FreightRepository(
     private val appCloud: AppCloud,
@@ -27,6 +29,8 @@ class FreightRepository(
         val mapperFeirghtModelToEntity = FeirghtModelToEntityMapper()
 
         return appCloud.getRouter(mapperModelToRequest.transform(routerModel))
+            .subscribeOn(Schedulers.io())
+            .retry(2)
             .flatMap { router ->
                 appCloud.getFreightPrice(
                     FreightPriceRequest(
@@ -39,7 +43,7 @@ class FreightRepository(
                 }.map {
                     local.saveFreight(mapperFeirghtModelToEntity.transform(Pair(routerModel, it)))
                     it
-                }
+                }.observeOn(AndroidSchedulers.mainThread())
             }
     }
 

@@ -25,7 +25,7 @@
                 android:layout_height="match_parent"
                 android:hint="Numero de Eixos"
                 android:inputType="number"
-                app:bindTextInt="@={viewModel.statesView.numberAxis}" />
+                app:bindTextAxis="@={viewModel.statesView.numberAxis}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

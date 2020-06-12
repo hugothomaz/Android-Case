@@ -32,7 +32,7 @@
             android:gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:bindTextInt="@={viewModel.statesView.numberAxis}"
+            app:bindTextAxis="@={viewModel.statesView.numberAxis}"
             app:layout_constraintEnd_toEndOf="@+id/label_layout_num_axis"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_layout_num_axis"

@@ -4,10 +4,8 @@ import com.hugothomaz.data.cloud.response.freight.FreightPriceResponse
 import com.hugothomaz.data.cloud.response.router.RouterResponse
 import com.hugothomaz.domain.model.enums.DurationUnit
 import com.hugothomaz.domain.model.FreightModel
-import com.hugothomaz.domain.model.RouterModel
 import com.hugothomaz.domain.model.TypeOfCargoModel
 import com.hugothomaz.domain.model.enums.DistanceUnitEnum
-import com.hugothomaz.domain.model.enums.MoneyUnitEnum
 import com.hugothomaz.domain.model.enums.VolumeUnitEnum
 import java.util.*
 
@@ -21,12 +19,12 @@ class FeirghtResponseToModelMapper : IMapper<Pair<RouterResponse, FreightPriceRe
             duration = pair.first.duration,
             durationUnit = DurationUnit.valueOf(pair.first.durationUnit.toUpperCase()),
             fuelCost = pair.first.fuelCost,
-            fuelMoneyUnit = MoneyUnitEnum.valueOf(pair.first.fuelCostUnit.toUpperCase()),
+            fuelMoneyUnit = pair.first.fuelCostUnit,
             fuelUsed = pair.first.fuelUsage,
             hasToll = pair.first.hasTolls,
             tollCost = pair.first.tollCost,
             tollCount = pair.first.tollCount,
-            tollMoneyUnit = MoneyUnitEnum.valueOf(pair.first.tollCostUnit.toUpperCase()),
+            tollMoneyUnit = pair.first.tollCostUnit,
             totalCost = pair.first.totalCost,
             fuelUseUnit = VolumeUnitEnum.valueOf(pair.first.fuelUsageUnit.toUpperCase()),
             typeOfCargoModel = mapperFreightModel(pair.second)
