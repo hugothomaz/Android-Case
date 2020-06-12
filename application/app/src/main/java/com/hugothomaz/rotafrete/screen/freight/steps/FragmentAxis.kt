@@ -13,10 +13,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FragmentAxis : Fragment(R.layout.step_axis_fragment) {
 
-
     private val viewModel by sharedViewModel<FreightViewModel>()
     private lateinit var bind : StepAxisFragmentBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +33,5 @@ class FragmentAxis : Fragment(R.layout.step_axis_fragment) {
     private fun bindViewModel(){
         bind.viewModel = viewModel
     }
-
-
 
 }

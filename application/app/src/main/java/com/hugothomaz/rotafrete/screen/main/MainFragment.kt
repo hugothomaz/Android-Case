@@ -26,21 +26,18 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindViewModel()
         observableStatesActionViewModel()
-        //setToolbar()
     }
 
     override fun onResume() {
         super.onResume()
         setToolbar()
-
     }
 
-    private fun setToolbar(){
+    private fun setToolbar() {
         (activity as MainActivity).apply {
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(false)
@@ -49,29 +46,25 @@ class MainFragment : Fragment() {
 
             getToolbar()?.apply {
                 setTitle("Rota Frete")
-
-
             }
-
         }
     }
 
     private fun bindViewModel() {
-        binding.viewModel = viewModel
+        binding.btOpenFreight.setOnClickListener {
+            val action = MainFragmentDirections.actionMainToFreight()
+            findNavController().navigate(action)
+        }
     }
 
     private fun observableStatesActionViewModel() {
         viewModel.statesAction.observe(this@MainFragment.viewLifecycleOwner, Observer {
             when (it) {
-                is MainStatesAction.OpenFreight -> {
-                    val action = MainFragmentDirections.actionMainToFreight()
-                    findNavController().navigate(action)
-                }
                 is MainStatesAction.SelectFreight -> {
+
                 }
             }
         })
     }
-
 
 }

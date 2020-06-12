@@ -64,8 +64,6 @@ class FreightViewModel(
         }
     }
 
-
-
     fun addPoint(latLng: LatLng, operation: OperationPointEnum) {
         if (operation.equals(OperationPointEnum.OPERATION_START)) {
             statesView.pointStart = PointModel(latLng.latitude, latLng.longitude)

@@ -17,15 +17,8 @@ class MainViewModel() : ViewModel() {
     val statesAction : LiveData<MainStatesAction>
     get() = statesActionMutable
 
-
-
-    fun initData(){
-
-    }
-
     fun openFreight(){
         statesActionMutable.postValue(MainStatesAction.OpenFreight)
     }
-
 
 }

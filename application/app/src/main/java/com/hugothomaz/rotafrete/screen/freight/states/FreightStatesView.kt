@@ -20,7 +20,6 @@ class FreightStatesView : BaseObservable() {
         const val RESUME = 5
     }
 
-
     private val MSG_AXIS_NOT_FILLED = "Informe o número de eixos"
     private val MSG_FUEL_PRICE_NOT_FILLED = "Informe o preço do combustível"
     private val MSG_FUEL_CONSUMPTION_NOT_FILLED = "Informe o consumo de combustível"
@@ -39,7 +38,6 @@ class FreightStatesView : BaseObservable() {
     var showButtonCalc: Boolean = false
         private set(value) {
             field = value
-            //checkStateNotNull()
             notifyPropertyChanged(BR.showButtonCalc)
         }
 
@@ -47,7 +45,6 @@ class FreightStatesView : BaseObservable() {
     var showButtonExit: Boolean = true
         private set(value) {
             field = value
-            //checkStateNotNull()
             notifyPropertyChanged(BR.showButtonExit)
         }
 
@@ -55,7 +52,6 @@ class FreightStatesView : BaseObservable() {
     var showButtonNext: Boolean = true
         private set(value) {
             field = value
-            //checkStateNotNull()
             notifyPropertyChanged(BR.showButtonNext)
         }
 
@@ -63,7 +59,6 @@ class FreightStatesView : BaseObservable() {
     var numberAxis: Int = 0
         set(value) {
             field = value
-            //checkStateNotNull()
             notifyPropertyChanged(BR.numberAxis)
         }
 
@@ -78,7 +73,12 @@ class FreightStatesView : BaseObservable() {
             notifyPropertyChanged(BR.fuelConsumption)
         }
 
+    @Bindable
     var fuelPrice: Double = 0.0
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.fuelPrice)
+        }
 
     fun nextStep() {
         when (step) {
@@ -93,7 +93,7 @@ class FreightStatesView : BaseObservable() {
             }
 
             FUEL_PRICE -> {
-                /*if (fuelPrice == null || fuelPrice == 0.0) {
+                if (fuelPrice == null || fuelPrice == 0.0) {
                     statesMutable.postValue(
                         FreightStates.NotReadyToNextStep(
                             MSG_FUEL_PRICE_NOT_FILLED
@@ -102,9 +102,7 @@ class FreightStatesView : BaseObservable() {
                 } else {
                     step = CONSUMPTION
                     statesMutable.postValue(FreightStates.Next(CONSUMPTION))
-                }*/
-                step = CONSUMPTION
-                statesMutable.postValue(FreightStates.Next(CONSUMPTION))
+                }
             }
 
             CONSUMPTION -> {

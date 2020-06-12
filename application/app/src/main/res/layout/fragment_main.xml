@@ -21,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:onClick="@{() -> viewModel.openFreight()}"
             android:text="Button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,10 +28,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <data>
-        <variable
-            name="viewModel"
-            type="com.hugothomaz.rotafrete.screen.main.MainViewModel" />
-    </data>
 </layout>

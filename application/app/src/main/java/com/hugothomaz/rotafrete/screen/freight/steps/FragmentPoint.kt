@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.hugothomaz.domain.model.PointModel
 import com.hugothomaz.domain.model.enums.OperationPointEnum
 import com.hugothomaz.rotafrete.R
 import com.hugothomaz.rotafrete.databinding.StepPointFragmentBinding
@@ -30,13 +28,10 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_point_fragment),
     OnMapReadyCallback, OnMapLongClickListener, OnMapClickListener {
 
-
     private val TAG = "TesteMapa"
     private val ZOOM_DEFAULT = 15f
-
     private val viewModel by sharedViewModel<FreightViewModel>()
     private lateinit var bind: StepPointFragmentBinding
-
     private var googleMaps: GoogleMap? = null
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var isMarker = false
@@ -58,7 +53,6 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
         if (isServiceOk()) {
             checkSalePermissions()
         }
-
         bindPosition()
     }
 
@@ -77,8 +71,6 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
         } else {
             clickMap()
         }
-
-
     }
 
     override fun onMapLongClick(latLng: LatLng?) {
@@ -93,7 +85,6 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
         latLng?.let {
             removePositionToCalcFreight(latLng)
         }
-
     }
 
     private fun bindViewModel() {
@@ -135,9 +126,7 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
                     }
                 }
             }
-
-        } catch (e: SecurityException) {
-        }
+        } catch (e: SecurityException) {}
     }
 
     private fun moveCamera(latLng: LatLng, zoom: Float) {
@@ -165,7 +154,6 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
 
         googleMaps?.addMarker(markerOptions)
         isMarker = true
-
     }
 
     private fun setPositionToCalcFreight(latLng: LatLng) {
@@ -182,7 +170,6 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
         getDeviceLocation()
-
     }
 
     private fun clickMap() {
@@ -192,21 +179,15 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
         }
     }
 
-
     private fun isServiceOk(): Boolean {
-        Log.d(TAG, "isServiceOk verifica estado da conexão do servico do google")
-
         val available =
             GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireActivity())
 
         if (available == ConnectionResult.SUCCESS) {
-            Log.d(TAG, "isServiceOk verifica - Success")
             return true
         } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
-            Log.d(TAG, "isServiceOk verifica - Error")
             return false
         } else {
-            Log.d(TAG, "isServiceOk verifica - Você não pode fazer solicitação de mapa")
             return false
         }
     }
@@ -221,37 +202,17 @@ class FragmentPoint(val operation: OperationPointEnum) : Fragment(R.layout.step_
             .subscribe { permission ->
                 when {
                     permission.granted -> {
-                        //Trabalha com mapa
                         initMap()
                     }
-                    permission.shouldShowRequestPermissionRationale -> {
-                        //Mostra dialog
-                    }
-                    else -> {
-                        showDetailSettings(/*R.string.error_permission_camera*/)
-                    }
+                    permission.shouldShowRequestPermissionRationale -> {}
+                    else -> {}
                 }
             }
-    }
-
-    private fun showDetailSettings(/*@StringRes msg: Int*/) {
-        Log.d(TAG, "Abrir settings detail para dar as permissões")
-        /* Snackbar
-             .make(
-                 *//*getViewDataBinding().root,
-                getString(msg),
-                Snackbar.LENGTH_INDEFINITE*//*
-            )
-            .setAction(getString(R.string.lable_button_request_permission)) {
-                startApplicationSettings()
-            }
-            .show()*/
     }
 
     override fun onResume() {
         super.onResume()
         bindPosition()
     }
-
 
 }

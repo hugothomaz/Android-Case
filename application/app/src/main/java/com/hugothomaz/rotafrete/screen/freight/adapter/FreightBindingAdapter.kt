@@ -63,22 +63,25 @@ object FreightBindingAdapter {
     //** Money **
     @JvmStatic
     @BindingAdapter(value = ["app:bindMoney"], requireAll = false)
-    fun bindMoney(
+    fun setBindMoney(
         textView: TextView?, textDouble: Double?
     ) {
         if (textView?.text.toString().isNotEmpty()) {
             val oldText = textView?.text.toString().moneyToDouble()
             textDouble.let { textD ->
                 if (textD != null || oldText != 0.0) {
-                    val money = textDouble?.toMoney()
-                    textView?.text = money
+                    if(textD != oldText){
+                        val money = textDouble?.toMoney()
+                        textView?.text = money
+                    }
+
                 }
             }
         }
     }
 
-    /*@InverseBindingAdapter(attribute = "bindMoney")
     @JvmStatic
+    @InverseBindingAdapter(attribute = "app:bindMoney")
     fun getBindMoney(textView: TextView): Double {
         if (textView.text.isNotEmpty()) {
             val value = textView.text.toString()
@@ -90,9 +93,16 @@ object FreightBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("bindMoneyAttrChanged")
-    fun setTextInputMoneyChangeListener(editText: TextView, listener: InverseBindingListener) {
-        editText.addTextChangedListener(MoneyTextWatcher(editText, listener))
-    }*/
+    fun bindMoneyAttrChanged(editText: TextView, listener: InverseBindingListener) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                listener.onChange()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        })
+    }
 
 
     //** Int **

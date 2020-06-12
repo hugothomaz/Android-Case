@@ -17,7 +17,6 @@ class FragmentFuelConsumption : Fragment(R.layout.step_fuel_consumption_fragment
     private val viewModel by sharedViewModel<FreightViewModel>()
     private lateinit var bind : StepFuelConsumptionFragmentBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
