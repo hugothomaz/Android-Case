@@ -10,7 +10,7 @@ interface IFreightRepository {
     fun calcFreight(
         routerModel: RouterModel,
         hasReturnShipment: Boolean
-    ): Single<FreightModel>
+    ): Maybe<FreightModel>
 
     fun fetchFreightByID(
         id : Long

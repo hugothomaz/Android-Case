@@ -5,8 +5,8 @@ enum class DurationUnit(val durationUnit: String) {
     SECONDS("seconds");
 
     override fun toString(): String {
-        return when(durationUnit){
-            SECONDS.name -> "segundos"
+        return when(durationUnit.toUpperCase()){
+            SECONDS.name.toUpperCase() -> "segundos"
             else -> ""
         }
     }

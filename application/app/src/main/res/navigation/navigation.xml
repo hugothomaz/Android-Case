@@ -37,6 +37,14 @@
         android:name="com.hugothomaz.rotafrete.screen.freight.ResultCalcFreightFragment"
         android:label="Fragment Freight"
         tools:layout="@layout/fragment_result_calc_freight">
+        <action android:id="@+id/action_result_calc_freight_to_main"
+            app:destination="@id/main_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/main_fragment"
+            app:popUpToInclusive="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
 </navigation>

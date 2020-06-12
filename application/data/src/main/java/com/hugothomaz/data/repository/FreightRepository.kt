@@ -11,9 +11,9 @@ import com.hugothomaz.domain.model.FreightModel
 import com.hugothomaz.domain.model.RouterModel
 import com.hugothomaz.domain.repository.IFreightRepository
 import io.reactivex.Maybe
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class FreightRepository(
     private val appCloud: AppCloud,
@@ -23,27 +23,37 @@ class FreightRepository(
     override fun calcFreight(
         routerModel: RouterModel,
         hasReturnShipment: Boolean
-    ): Single<FreightModel> {
+    ): Maybe<FreightModel> {
         val mapperModelToRequest = RouterModelToRequestMapper()
         val mapperFeirghtResponseToModel = FeirghtResponseToModelMapper()
         val mapperFeirghtModelToEntity = FeirghtModelToEntityMapper()
+        val mapperFeirghtEntityToModel = FeirghtEntityToModelMapper()
 
         return appCloud.getRouter(mapperModelToRequest.transform(routerModel))
-            .subscribeOn(Schedulers.io())
             .retry(2)
             .flatMap { router ->
-                appCloud.getFreightPrice(
+                appCloud
+                    .getFreightPrice(
                     FreightPriceRequest(
                         axis = routerModel.axis,
                         distance = router.distance,
                         hasReturnShipment = hasReturnShipment
                     )
-                ).map { freight ->
-                    mapperFeirghtResponseToModel.transform(Pair(router, freight))
+                ).retry(2)
+                    .map { freight ->
+                    val map = hashMapOf<String, Any>()
+                    map.put(FeirghtResponseToModelMapper.ROUTER_RESPONSE, router as Any)
+                    map.put(FeirghtResponseToModelMapper.ROUTER_MODEL, routerModel as Any)
+                    map.put(FeirghtResponseToModelMapper.FREIGHT_PRICE_RESPONSE, freight as Any)
+
+                    mapperFeirghtResponseToModel.transform(map)
                 }.map {
                     local.saveFreight(mapperFeirghtModelToEntity.transform(Pair(routerModel, it)))
-                    it
-                }.observeOn(AndroidSchedulers.mainThread())
+                }.flatMap { id ->
+                    local.fetchFreightByID(id)
+                }.flatMap {
+                    Maybe.just(mapperFeirghtEntityToModel.transform(it))
+                }
             }
     }
 

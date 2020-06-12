@@ -12,7 +12,7 @@ import io.reactivex.Single
 interface FreightDao {
 
     @Insert
-    fun insertFreight(freightEntity : FreightEntity) : Single<Long>
+    fun insertFreight(freightEntity : FreightEntity) : Long
 
     @Transaction
     @Query("select * from freight")

@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 class FreightLocal(private val dao: FreightDao) {
 
-    fun saveFreight(freightEntity: FreightEntity) : Single<Long>{
+    fun saveFreight(freightEntity: FreightEntity) : Long{
         return dao.insertFreight(freightEntity)
     }
 

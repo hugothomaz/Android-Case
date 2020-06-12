@@ -6,18 +6,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.hugothomaz.domain.interactor.CalcFreightUseCase
+import com.hugothomaz.domain.interactor.GetFreightUseCase
 import com.hugothomaz.domain.model.FreightModel
 import com.hugothomaz.domain.model.PointModel
 import com.hugothomaz.domain.model.RouterModel
 import com.hugothomaz.domain.model.enums.OperationPointEnum
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStates
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStatesView
-import com.hugothomaz.rotafrete.screen.freight.steps.FragmentPoint
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.NoSuchElementException
 
 class FreightViewModel(
-    private val calcFreightUseCase: CalcFreightUseCase
+    private val calcFreightUseCase: CalcFreightUseCase,
+    private val getFreightUseCase : GetFreightUseCase
 ) : ViewModel() {
 
     var statesView: FreightStatesView = FreightStatesView()
@@ -45,21 +46,25 @@ class FreightViewModel(
                     fuelPrice = statesView.fuelPrice
                 ),
                 hasReturnShipment = true
-            )
+            ).doOnSubscribe {
+                statesMutableLiveData.postValue(FreightStates.Load)
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { it ->
-                        Log.d("app_subscribe", it.distance.toString())
-                        statesMutableLiveData.postValue(FreightStates.SuccessCall)
+                        statesMutableLiveData.postValue(FreightStates.SuccessCalc(it))
                         freightModelMutableLiveData.postValue(it)
                     },
                     {
                         Log.d("app_subscribe", "Deu erro: ${it.message}")
                         statesMutableLiveData.postValue(FreightStates.Error(it.message ?: ""))
                     }
-
                 )
         }
     }
+
+
 
     fun addPoint(latLng: LatLng, operation: OperationPointEnum) {
         if (operation.equals(OperationPointEnum.OPERATION_START)) {

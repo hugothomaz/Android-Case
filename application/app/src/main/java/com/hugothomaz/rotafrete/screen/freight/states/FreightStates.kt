@@ -4,7 +4,8 @@ import com.hugothomaz.domain.model.FreightModel
 
 
 sealed class FreightStates() {
-    object SuccessCall : FreightStates()
+    class SuccessCalc(val freightModel: FreightModel) : FreightStates()
+    object Load : FreightStates()
     object ToCalc : FreightStates()
     class Next(val stepPosition : Int) : FreightStates()
     class Back(val stepPosition : Int) : FreightStates()

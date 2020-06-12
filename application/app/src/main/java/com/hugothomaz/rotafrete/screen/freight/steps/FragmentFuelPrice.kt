@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.hugothomaz.rotafrete.R
 import com.hugothomaz.rotafrete.databinding.StepFuelPriceFragmentBinding
-import com.hugothomaz.rotafrete.extensions.removeSymbolMoney
+import com.hugothomaz.domain.extensions.removeSymbolMoney
 import com.hugothomaz.rotafrete.screen.freight.FreightViewModel
 import com.hugothomaz.rotafrete.screen.freight.adapter.MoneyTextWatcher
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStates

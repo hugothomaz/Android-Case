@@ -14,7 +14,6 @@ data class RouterResponse(
     @SerializedName("fuel_usage") val fuelUsage: Double,
     @SerializedName("fuel_usage_unit") val fuelUsageUnit: String,
     @SerializedName("has_tolls") val hasTolls: Boolean,
-    @SerializedName("pointResponses") val pointResponses: List<PointResponse>,
     @SerializedName("provider") val provider: String,
     @SerializedName("route") val route: List<List<List<Double>>>,
     @SerializedName("toll_cost") val tollCost: Double,

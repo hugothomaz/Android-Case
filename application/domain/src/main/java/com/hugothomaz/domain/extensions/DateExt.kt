@@ -1,4 +1,4 @@
-package com.hugothomaz.rotafrete.extensions
+package com.hugothomaz.domain.extensions
 
 import java.text.SimpleDateFormat
 import java.util.*

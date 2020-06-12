@@ -31,7 +31,10 @@ class FeirghtEntityToModelMapper : IMapper<FreightEntity, FreightModel> {
                 neogranel = entity.neogranel,
                 granel = entity.granel,
                 geral = entity.geral
-            )
+            ),
+            axis = entity.axis,
+            fuelPrice = entity.fuelPrice,
+            fuelConsumption = entity.fuelConsumption
         )
     }
 }

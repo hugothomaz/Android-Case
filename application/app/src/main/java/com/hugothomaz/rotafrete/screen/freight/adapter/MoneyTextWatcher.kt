@@ -5,9 +5,9 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.InverseBindingListener
-import com.hugothomaz.rotafrete.extensions.noFormatedToDoble
-import com.hugothomaz.rotafrete.extensions.removeSymbolMoney
-import com.hugothomaz.rotafrete.extensions.toMoney
+import com.hugothomaz.domain.extensions.noFormatedToDoble
+import com.hugothomaz.domain.extensions.removeSymbolMoney
+import com.hugothomaz.domain.extensions.toMoney
 
 
 class MoneyTextWatcher : TextWatcher {

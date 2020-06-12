@@ -7,9 +7,9 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
-import com.hugothomaz.rotafrete.extensions.moneyToDouble
-import com.hugothomaz.rotafrete.extensions.removeSymbolMoney
-import com.hugothomaz.rotafrete.extensions.toMoney
+import com.hugothomaz.domain.extensions.moneyToDouble
+import com.hugothomaz.domain.extensions.removeSymbolMoney
+import com.hugothomaz.domain.extensions.toMoney
 
 object FreightBindingAdapter {
 
@@ -138,7 +138,7 @@ object FreightBindingAdapter {
                     val newValueInt = editText.text.toString()
                     val size = newValueInt.length
                     val value = newValueInt[size-1].toString()
-                    if(value.matches(Regex("[0-9]"))){
+                    if(value.matches(Regex("[2-9]"))){
                         editText.setText(value)
                     }
                     editable?.let {

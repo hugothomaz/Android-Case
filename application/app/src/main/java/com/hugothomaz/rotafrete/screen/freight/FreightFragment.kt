@@ -1,7 +1,6 @@
 package com.hugothomaz.rotafrete.screen.freight
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,21 +8,14 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
-import com.hugothomaz.rotafrete.R
 import com.hugothomaz.rotafrete.databinding.FragmentFreightBinding
 import com.hugothomaz.rotafrete.screen.freight.adapter.FreightStepViewPagerAdapter
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStates
 import com.hugothomaz.rotafrete.screen.freight.states.FreightStatesView
 import com.hugothomaz.rotafrete.screen.freight.steps.FragmentFuelPrice
-import com.hugothomaz.rotafrete.screen.freight.steps.ListenerSaveFuelPrice
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class FreightFragment : Fragment() {

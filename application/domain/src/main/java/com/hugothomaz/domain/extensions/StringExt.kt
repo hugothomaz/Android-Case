@@ -1,4 +1,4 @@
-package com.hugothomaz.rotafrete.extensions
+package com.hugothomaz.domain.extensions
 
 
 fun String.removeSymbolMoney() : String{
