@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/light_gray"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_freight_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@{freightModel.getDateToString}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="12/06/2020 10:20" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_freight_tv_fuel_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/item_freight_tv_fuel_price"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_freight_date"
+                tools:text="Distancia" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_freight_value_fuel_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{freightModel.getDistancia}"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/item_freight_value_fuel_price"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_freight_tv_fuel_distance"
+                tools:text="3584 Metros" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_freight_tv_fuel_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_freight_date"
+                tools:text="Distancia" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_freight_value_fuel_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{freightModel.getFuelPriceMoney}"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_freight_tv_fuel_price"
+                tools:text="3584 Metros" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_freight_tv_total_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/item_freight_tv_fuel_price"
+                app:layout_constraintTop_toBottomOf="@+id/item_freight_date"
+                tools:text="Distancia" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_freight_value_total_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{freightModel.getTotalCostToMoney}"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/item_freight_value_fuel_price"
+                app:layout_constraintTop_toBottomOf="@+id/item_freight_tv_total_cost"
+                tools:text="3584 Metros" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <data>
+
+        <variable
+            name="freightModel"
+            type="com.hugothomaz.domain.model.FreightModel" />
+    </data>
+
+</layout>

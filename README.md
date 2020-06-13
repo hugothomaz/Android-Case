@@ -1,3 +1,95 @@
+# Rota Frete!
+ 
+Aplicativo de estudo feito para aproveitar as melhores práticas de programação usando a APIs públicas de geolocalização e calculo de frete. 
+
+[APK](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/apk/RotaFrete.apk?raw=true) || [VIDEO](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/videos/vide_app_rota_frete.mp4?raw=true) || [YOUTUBE](https://www.youtube.com/watch?v=Ala4heQz7S4)
+
+
+<table>
+  <thead>
+    <tr>
+      <th>BASE</th>
+      <th>Architecture</th>
+      <th>IU</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>AppCompact</td>
+      <td>DataBinding</td>
+      <td>Navigation</td>
+    </tr>
+    <tr>
+      <td>Android KTX</td>
+      <td>Lifecycles</td>
+      <td>Material Components</td>
+    </tr>
+     <tr>
+      <td>Kotlin</td>
+      <td>LiveData</td>
+    </tr>
+     <tr>
+      <td>Android Arch</td>
+      <td>ViewModel</td>
+    </tr>
+  </tbody>
+</table>
+
+**Screens**
+| **Home** | **Eixo**|**Preço Combustível**|
+|--|--|--|
+| ![enter image description here](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/images/home.jpeg) | ![enter image description here](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/images/insert_axis.jpeg) |![enter image description here](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/images/insert_fuel_price.jpeg)|
+
+| Consumo | Ponto de Partida | Ponto de Chegada|
+|--|--|--|
+| ![enter image description here](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/images/insert_fuel_consumption.jpeg) | ![enter image description here](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/images/insert_start_point.jpeg) | ![enter image description here](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/images/insert_end_point.jpeg)|
+
+|Resumo| Resultado | |
+|--|--|--|
+| ![enter image description here](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/images/resume.jpeg) | ![enter image description here](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/images/result_calc.jpeg) | |
+
+
+## Base do projeto
+
+- **Multicamada:**
+Organização de código inspirada no DDD e na arquitetura limpa focada na escalabilidade da base de código.
+
+- **Injeção de dependência:**
+Com o Koin, uma biblioteca prática de injeção de dependências, o código não será associado e ainda será fácil resolver automaticamente as dependências no tempo de execução e zombar delas durante os testes.
+
+- **Kotlin KTS:**
+Usando o Kotlin KTS, podemos tirar proveito da configuração do aplicativo usando a linguagem kotlin em nosso arquivo gradle. Isso torna nossa configuração ainda mais fácil
+
+- **Databinding:**
+A ligação de dados é uma maneira fácil de controlar as regras da interface do usuário e facilita a ligação de dados na tela. Isso reduz a clichê de código grande e deixa as regras de visualização centralizadas
+
+## Camadas
+
+- ** Presentation: **
+Camada para gerenciar o acesso inicial aos dados através do ViewModel
+
+- ** Domain: **
+Camada para gerenciar regras de negócios usando eventos de propagação do UseCase
+
+- ** Data: **
+Camada para dados de acesso integrado usando Repository e DataSource no banco de dados local ou na nuvem
+
+## CODE
+- **IDE - Android Studio 4.0** 
+
+- **Gradle 4.0.0**
+
+- **Kotlin 1.3.72**
+
+- **AAC Android Architecture Components**
+
+- **Clean Architecture**
+
+- **DataBinding**
+
+- **ViewModel**
+
+
 # Android-Case
 
 

@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/ctn_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{isLoading ? View.GONE : View.VISIBLE}">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_num_axis"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="Número de Eixos"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_layout_fuel_price"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_num_axis"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:bindTextAxis="@{freightModel.axis}"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_num_axis"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_num_axis"
+                tools:text="2" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_fuel_price"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Preço do Compustível"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/label_layout_num_axis"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_layout_num_axis"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_fuel_price"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getFuelPriceMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_fuel_price"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_fuel_price"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_fuel_price"
+                tools:text="R$2.58" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_fuel_consumption"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="Consumo médio de Combustível"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_layout_distance"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_fuel_price" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_fuel_consumption"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getFuelConsumptionToVolume}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_fuel_consumption"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_fuel_consumption"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_fuel_consumption"
+                tools:text="4.5 Km/l" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_distance"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Distância"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/label_layout_fuel_consumption"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_layout_fuel_consumption"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_fuel_price"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_distance"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getDistancia}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_distance"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_distance"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_distance"
+                tools:text="458.5 Km" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_fuel_cost"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Custo do Compustível"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="@+id/text_layout_fuel_consumption"
+                app:layout_constraintStart_toStartOf="@+id/text_layout_fuel_consumption"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_fuel_consumption" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_fuel_cost"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getFuelCostToMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_fuel_cost"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_fuel_cost"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_fuel_cost"
+                tools:text="R$85 Km" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_fuel_used"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Combustível Utilizado"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/label_layout_fuel_cost"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/text_layout_distance"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_distance" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_fuel_used"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getFuelUsedToVolume}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_fuel_used"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_fuel_used"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_fuel_used"
+                tools:text="10 litros" />
+
+            <View
+                android:id="@+id/divider_toll"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/light_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_fuel_cost" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_toll_count"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:text="Número de Pedágios"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_layout_toll_cost"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_toll" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_toll_count"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:bindTextDouble="@{freightModel.tollCount}"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_toll_count"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_toll_count"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_toll_count"
+                tools:text="2 Pedagios" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_toll_cost"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Custo de Pedágio"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_layout_toll_count"
+                app:layout_constraintTop_toBottomOf="@+id/divider_toll" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_toll_cost"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getTollCostMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_toll_cost"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_toll_cost"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_toll_cost"
+                tools:text="R$27,25" />
+
+
+            <View
+                android:id="@+id/divider_type_cargo"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/light_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_toll_cost" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_type_cargo"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="Tipos de Carga"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_type_cargo" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_frigorificada"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:text="Frigorifico"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_layout_geral"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_type_cargo" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_frigorificada"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getFrigorificadaToMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_frigorificada"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_frigorificada"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_frigorificada"
+                tools:text="R$1.159,98" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_geral"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Geral"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_layout_frigorificada"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_type_cargo" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_geral"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getGeralToMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_geral"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_geral"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_geral"
+                tools:text="R$287,68" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_granel"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:text="Granel"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toStartOf="@+id/label_layout_neogranel"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_frigorificada" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_granel"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getGranelToMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_granel"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_granel"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_granel"
+                tools:text="R$487,34" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_neogranel"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Neogranel"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/label_layout_granel"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_geral" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_neogranel"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getNeogranelToMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_neogranel"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_neogranel"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_neogranel"
+                tools:text="R$358,84" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_perigosa"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Perigosa"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_granel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_neogranel" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_perigosa"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{freightModel.getPerigosaToMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_perigosa"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_perigosa"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_perigosa"
+                tools:text="R$955,25" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_layout_total"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="32dp"
+                android:gravity="center"
+                android:text="Total"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_layout_perigosa" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_layout_total"
+                style="@style/Widget.MaterialComponents.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:gravity="center"
+                android:text="@{freightModel.getTotalCostToMoney}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/btFinish"
+                app:layout_constraintEnd_toEndOf="@+id/label_layout_total"
+                app:layout_constraintStart_toStartOf="@+id/label_layout_total"
+                app:layout_constraintTop_toBottomOf="@+id/label_layout_total"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="R$955,25" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btFinish"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:text="Concluir"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:visibility="visible" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isLoading"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="freightModel"
+            type="com.hugothomaz.domain.model.FreightModel" />
+    </data>
+</layout>

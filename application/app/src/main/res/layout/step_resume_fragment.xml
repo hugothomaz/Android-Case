@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_layout_num_axis"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
+            android:text="Numero de Eixos"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toStartOf="@+id/label_layout_fuel_price"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_layout_num_axis"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:bindTextAxis="@={viewModel.statesView.numberAxis}"
+            app:layout_constraintEnd_toEndOf="@+id/label_layout_num_axis"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_layout_num_axis"
+            tools:text="2" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_layout_fuel_price"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="Preço do Compustível"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/label_layout_num_axis"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_layout_fuel_price"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:bindMoney="@{viewModel.statesView.fuelPrice}"
+            app:layout_constraintEnd_toEndOf="@+id/label_layout_fuel_price"
+            app:layout_constraintStart_toStartOf="@+id/label_layout_fuel_price"
+            app:layout_constraintTop_toBottomOf="@+id/label_layout_fuel_price"
+            tools:text="R$2.58" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_layout_fuel_consumption"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            android:text="Consumo médio de Combustível"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_layout_num_axis"
+            app:layout_constraintTop_toBottomOf="@+id/text_layout_fuel_price" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_layout_fuel_consumption"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:bindTextDouble="@={viewModel.statesView.fuelConsumption}"
+            app:layout_constraintEnd_toEndOf="@+id/label_layout_fuel_consumption"
+            app:layout_constraintStart_toStartOf="@+id/label_layout_fuel_consumption"
+            app:layout_constraintTop_toBottomOf="@+id/label_layout_fuel_consumption"
+            tools:text="4.5 Km/l" />
+
+
+        <RelativeLayout
+            android:id="@+id/point_start_map"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            app:layout_constraintBottom_toTopOf="@+id/point_end_map"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_layout_fuel_consumption" />
+
+
+        <RelativeLayout
+            android:id="@+id/point_end_map"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:elevation="3dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/point_start_map" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hugothomaz.rotafrete.screen.freight.FreightViewModel" />
+    </data>
+
+</layout>
