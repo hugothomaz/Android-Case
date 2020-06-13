@@ -26,6 +26,7 @@ class FeirghtResponseToModelMapper : IMapper<Map<String, Any>, FreightModel> {
 
 
         return FreightModel(
+            id = null,
             distance = routerResponse.distance,
             date = Date(),
             distanceUnit = DistanceUnitEnum.valueOf(routerResponse.distanceUnit.toUpperCase()),

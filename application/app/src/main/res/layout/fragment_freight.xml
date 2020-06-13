@@ -114,7 +114,6 @@
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:onClick="@{() -> viewModel.check()}"
                 android:text="Calcular"
                 android:visibility="@{viewModel.statesView.showButtonCalc ? View.VISIBLE : View.GONE }"
                 app:icon="@drawable/ic_calc"

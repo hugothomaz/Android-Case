@@ -8,11 +8,11 @@ import com.hugothomaz.domain.model.FreightModel
 import com.hugothomaz.rotafrete.R
 import com.hugothomaz.rotafrete.databinding.ItemFreightBinding
 
-class FreightAdapter : RecyclerView.Adapter<FreightAdapter.FreightViewHolder>(){
+class FreightAdapter : RecyclerView.Adapter<FreightAdapter.FreightViewHolder>() {
 
     private val list: ArrayList<FreightModel> = arrayListOf()
 
-
+    private var selectFreightListener: SelectFreightListener? = null
 
     override fun getItemCount(): Int {
         return list.size
@@ -23,27 +23,41 @@ class FreightAdapter : RecyclerView.Adapter<FreightAdapter.FreightViewHolder>(){
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FreightViewHolder {
-        val binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-        R.layout.item_freight, parent, false) as ItemFreightBinding
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.item_freight, parent, false
+        ) as ItemFreightBinding
 
         return FreightViewHolder(itemBinding = binding)
     }
 
-    fun addItens(listItens : List<FreightModel>){
+    fun addItens(listItens: List<FreightModel>) {
         list.clear()
         list.addAll(listItens)
 
         notifyDataSetChanged()
     }
 
-    inner class FreightViewHolder(val itemBinding : ItemFreightBinding) : RecyclerView.ViewHolder(itemBinding.root){
+    fun addSelectFreightListener(selectFreightListener: SelectFreightListener) {
+        this.selectFreightListener = selectFreightListener
+    }
 
-        fun bind(model : FreightModel){
+    inner class FreightViewHolder(val itemBinding: ItemFreightBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+
+        fun bind(model: FreightModel) {
             itemBinding.apply {
+                root.setOnClickListener {
+                    selectFreightListener?.selectFreightModel(model)
+                }
                 freightModel = model
                 executePendingBindings()
             }
         }
+    }
+
+    interface SelectFreightListener {
+        fun selectFreightModel(freightModel: FreightModel)
     }
 
 }

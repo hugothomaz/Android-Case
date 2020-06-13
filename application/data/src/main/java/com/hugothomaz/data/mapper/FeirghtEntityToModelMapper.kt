@@ -11,6 +11,7 @@ class FeirghtEntityToModelMapper : IMapper<FreightEntity, FreightModel> {
 
     override fun transform(entity: FreightEntity): FreightModel {
         return FreightModel(
+            id = entity.id,
             date = entity.date,
             distance = entity.distance,
             distanceUnit = DistanceUnitEnum.valueOf(entity.distanceUnit.toUpperCase()),

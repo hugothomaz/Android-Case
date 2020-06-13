@@ -17,6 +17,7 @@ class ResultCalcFreightFragment : Fragment(R.layout.fragment_result_calc_freight
 
     private lateinit var binding: FragmentResultCalcFreightBinding
     private val viewModel by sharedViewModel<FreightViewModel>()
+    private var freightID = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,13 +30,15 @@ class ResultCalcFreightFragment : Fragment(R.layout.fragment_result_calc_freight
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getArgument()
         initCalc()
         observableViewModel()
         bindClick()
+
     }
 
     private fun initCalc(){
-        viewModel.calcFreight()
+        viewModel.calcFreight(freightID)
     }
 
     private fun observableViewModel(){
@@ -64,6 +67,13 @@ class ResultCalcFreightFragment : Fragment(R.layout.fragment_result_calc_freight
         binding.includeResultCalc.btFinish.setOnClickListener {
             val action = ResultCalcFreightFragmentDirections.actionResultCalcFreightToMain()
             findNavController()?.navigate(action)
+        }
+    }
+
+    private fun getArgument(){
+        val id = arguments?.get("id_freight")
+        if(id != null){
+            freightID = (id as Long)
         }
     }
 

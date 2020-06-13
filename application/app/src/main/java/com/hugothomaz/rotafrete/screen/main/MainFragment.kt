@@ -8,14 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.hugothomaz.domain.model.FreightModel
 import com.hugothomaz.rotafrete.databinding.FragmentMainBinding
+import com.hugothomaz.rotafrete.screen.freight.FreightFragmentDirections
 import com.hugothomaz.rotafrete.screen.main.adapter.FreightAdapter
+import com.hugothomaz.rotafrete.screen.main.adapter.FreightAdapter.SelectFreightListener
 import com.hugothomaz.rotafrete.screen.main.state.MainStatesAction
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), SelectFreightListener {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel by viewModel<MainViewModel>()
@@ -39,10 +42,16 @@ class MainFragment : Fragment() {
 
     }
 
+    override fun selectFreightModel(freightModel: FreightModel) {
+        val action = MainFragmentDirections.actionMainToResultCalc(freightModel.id?:0L)
+        findNavController().navigate(action)
+    }
+
     override fun onResume() {
         super.onResume()
         setToolbar()
     }
+
 
     private fun requestListFreight(){
         viewModel.requestListFreight()
@@ -74,8 +83,9 @@ class MainFragment : Fragment() {
                 is MainStatesAction.ListFreights -> {
                     addListFreight(states.listFreight)
                 }
-                is MainStatesAction.SelectFreight -> {
 
+                is MainStatesAction.Error -> {
+                    showMessage(states.message)
                 }
             }
         })
@@ -87,7 +97,9 @@ class MainFragment : Fragment() {
 
     private fun bindList() {
         val list = binding.recycler
-        freightAdapter = FreightAdapter()
+        freightAdapter = FreightAdapter().apply {
+            addSelectFreightListener(this@MainFragment)
+        }
 
         list.apply {
             adapter = freightAdapter
@@ -97,6 +109,25 @@ class MainFragment : Fragment() {
                     reverseLayout = true
                     stackFromEnd = true
                 }
+        }
+    }
+
+    private fun showMessage(message: String, isIndefinite: Boolean = false) {
+        activity?.let {
+            val snack = Snackbar.make(
+                it.findViewById(android.R.id.content),
+                message,
+                Snackbar.LENGTH_INDEFINITE
+            )
+
+            if (isIndefinite) {
+                snack.setAction("OK") {
+                    snack.dismiss()
+                }
+            } else {
+                snack.duration = Snackbar.LENGTH_LONG
+            }
+            snack.show()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.hugothomaz.rotafrete.screen.freight
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,50 +19,22 @@ import io.reactivex.schedulers.Schedulers
 
 class FreightViewModel(
     private val calcFreightUseCase: CalcFreightUseCase,
-    private val getFreightUseCase : GetFreightUseCase
+    private val getFreightUseCase: GetFreightUseCase
 ) : ViewModel() {
 
     var statesView: FreightStatesView = FreightStatesView()
-
-    private val freightModelMutableLiveData = MutableLiveData<FreightModel>()
-    val freightModelLiveData: LiveData<FreightModel>
-        get() = freightModelMutableLiveData
 
     private val statesMutableLiveData = MutableLiveData<FreightStates>()
     val states: LiveData<FreightStates>
         get() = statesMutableLiveData
 
-    fun check(){
-        statesMutableLiveData.postValue(FreightStates.ToCalc)
-    }
-
-    fun calcFreight() {
-        states.run {
-            calcFreightUseCase.execute(
-                RouterModel(
-                    pointModelStart = statesView.pointStart!!,
-                    pointModelEnd = statesView.pointEnd!!,
-                    axis = statesView.numberAxis ?: 0,
-                    fuelConsumption = statesView.fuelConsumption,
-                    fuelPrice = statesView.fuelPrice
-                ),
-                hasReturnShipment = true
-            ).doOnSubscribe {
-                statesMutableLiveData.postValue(FreightStates.Load)
-            }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { it ->
-                        statesMutableLiveData.postValue(FreightStates.SuccessCalc(it))
-                        freightModelMutableLiveData.postValue(it)
-                    },
-                    {
-                        Log.d("app_subscribe", "Deu erro: ${it.message}")
-                        statesMutableLiveData.postValue(FreightStates.Error(it.message ?: ""))
-                    }
-                )
+    fun calcFreight(freightID: Long) {
+        if (freightID == 0L && statesView.pointEnd != null) {
+            getFreightByModel()
+        } else {
+            getFreightByID(freightID)
         }
+
     }
 
     fun addPoint(latLng: LatLng, operation: OperationPointEnum) {
@@ -84,10 +57,52 @@ class FreightViewModel(
         statesView.nextStep()
     }
 
-    fun onDestroy(){
+    fun onDestroy() {
         statesView = FreightStatesView()
-        freightModelMutableLiveData.postValue(null)
         statesMutableLiveData.postValue(null)
+    }
+
+    private fun getFreightByModel() {
+        states.run {
+            calcFreightUseCase.execute(
+                RouterModel(
+                    pointModelStart = statesView.pointStart!!,
+                    pointModelEnd = statesView.pointEnd!!,
+                    axis = statesView.numberAxis ?: 0,
+                    fuelConsumption = statesView.fuelConsumption,
+                    fuelPrice = statesView.fuelPrice
+                ),
+                hasReturnShipment = true
+            ).doOnSubscribe {
+                statesMutableLiveData.postValue(FreightStates.Load)
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { it ->
+                        statesMutableLiveData.postValue(FreightStates.SuccessCalc(it))
+                    },
+                    {
+                        Log.d("app_subscribe", "Deu erro: ${it.message}")
+                        statesMutableLiveData.postValue(FreightStates.Error(it.message ?: ""))
+                    }
+                )
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun getFreightByID(freightID: Long) {
+        getFreightUseCase.getFreightByID(freightID)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { it ->
+                    statesMutableLiveData.postValue(FreightStates.SuccessCalc(it))
+                },
+                {
+                    Log.d("app_subscribe", "Deu erro: ${it.message}")
+                    statesMutableLiveData.postValue(FreightStates.Error(it.message ?: ""))
+                })
     }
 
 }

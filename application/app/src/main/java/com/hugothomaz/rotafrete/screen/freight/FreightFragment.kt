@@ -41,6 +41,7 @@ class FreightFragment : Fragment() {
         bindViewPager()
         bindViewModel()
         observableViewModel()
+        bindClick()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -89,10 +90,6 @@ class FreightFragment : Fragment() {
 
     private fun handlerStatus(states: FreightStates?) {
         when (states) {
-            is FreightStates.ToCalc -> {
-                val action = FreightFragmentDirections.actionFreightToCalcResultFreight()
-                navController?.navigate(action)
-            }
             is FreightStates.Next -> {
                 if (states.stepPosition == FreightStatesView.CONSUMPTION) {
                     viewPager?.let {
@@ -113,6 +110,13 @@ class FreightFragment : Fragment() {
             is FreightStates.NotReadyToNextStep -> {
                 showMessage(states.message)
             }
+        }
+    }
+
+    private fun bindClick(){
+        binding.btCalc.setOnClickListener {
+            val action = FreightFragmentDirections.actionFreightToCalcResultFreight(0L)
+            navController?.navigate(action)
         }
     }
 

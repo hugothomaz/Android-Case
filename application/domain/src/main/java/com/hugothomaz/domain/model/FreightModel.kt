@@ -8,6 +8,7 @@ import com.hugothomaz.domain.model.enums.VolumeUnitEnum
 import java.util.*
 
 data class FreightModel(
+    val id : Long ?= null,
     val date : Date,
     val distance: Int,
     val axis : Int,
