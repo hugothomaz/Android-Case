@@ -2,7 +2,7 @@
 
 Aplicativo de estudo feito para aproveitar as melhores práticas de programação usando a APIs públicas de geolocalização e calculo de frete. 
 
-[APK](asdads) || [VIDEO](adasd) || [YOUTUBE](asdasdsad)
+[APK](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/apk/RotaFrete.apk?raw=true) || [VIDEO](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/videos/vide_app_rota_frete.mp4?raw=true) || [YOUTUBE](https://www.youtube.com/watch?v=Ala4heQz7S4)
 
 
 <table>
@@ -34,7 +34,6 @@ Aplicativo de estudo feito para aproveitar as melhores práticas de programaçã
     </tr>
   </tbody>
 </table>
-
 
 **Screens**
 | **Home** | **Eixo**|**Preço Combustível**|

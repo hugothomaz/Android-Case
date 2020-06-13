@@ -57,11 +57,6 @@ class FreightViewModel(
         statesView.nextStep()
     }
 
-    fun onDestroy() {
-        statesView = FreightStatesView()
-        statesMutableLiveData.postValue(null)
-    }
-
     private fun getFreightByModel() {
         states.run {
             calcFreightUseCase.execute(
@@ -103,6 +98,10 @@ class FreightViewModel(
                     Log.d("app_subscribe", "Deu erro: ${it.message}")
                     statesMutableLiveData.postValue(FreightStates.Error(it.message ?: ""))
                 })
+    }
+
+    fun onDestroy() {
+        statesView = FreightStatesView()
     }
 
 }
