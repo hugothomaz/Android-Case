@@ -1,5 +1,6 @@
 package com.hugothomaz.domain.model
 
+import com.hugothomaz.domain.extensions.localDateHourString
 import com.hugothomaz.domain.extensions.toMoney
 import com.hugothomaz.domain.model.enums.DistanceUnitEnum
 import com.hugothomaz.domain.model.enums.DurationUnit
@@ -26,6 +27,10 @@ data class FreightModel(
     val totalCost: Double,
     val typeOfCargoModel : TypeOfCargoModel
 ){
+
+    fun getDateToString() : String {
+        return date.localDateHourString()
+    }
 
     fun getFuelPriceMoney() : String {
         return fuelPrice.toMoney()

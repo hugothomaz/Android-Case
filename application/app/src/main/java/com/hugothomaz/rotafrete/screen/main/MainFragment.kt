@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.hugothomaz.domain.model.FreightModel
 import com.hugothomaz.rotafrete.databinding.FragmentMainBinding
+import com.hugothomaz.rotafrete.screen.main.adapter.FreightAdapter
 import com.hugothomaz.rotafrete.screen.main.state.MainStatesAction
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -16,6 +19,7 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel by viewModel<MainViewModel>()
+    private var freightAdapter: FreightAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,11 +34,18 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindViewModel()
         observableStatesActionViewModel()
+        bindList()
+        requestListFreight()
+
     }
 
     override fun onResume() {
         super.onResume()
         setToolbar()
+    }
+
+    private fun requestListFreight(){
+        viewModel.requestListFreight()
     }
 
     private fun setToolbar() {
@@ -58,13 +69,35 @@ class MainFragment : Fragment() {
     }
 
     private fun observableStatesActionViewModel() {
-        viewModel.statesAction.observe(this@MainFragment.viewLifecycleOwner, Observer {
-            when (it) {
+        viewModel.statesAction.observe(this@MainFragment.viewLifecycleOwner, Observer {states ->
+            when (states) {
+                is MainStatesAction.ListFreights -> {
+                    addListFreight(states.listFreight)
+                }
                 is MainStatesAction.SelectFreight -> {
 
                 }
             }
         })
+    }
+
+    private fun addListFreight(listFreight : List<FreightModel>){
+        freightAdapter?.addItens(listFreight)
+    }
+
+    private fun bindList() {
+        val list = binding.recycler
+        freightAdapter = FreightAdapter()
+
+        list.apply {
+            adapter = freightAdapter
+            layoutManager =
+                LinearLayoutManager(this.context).apply {
+                    orientation = LinearLayoutManager.VERTICAL
+                    reverseLayout = true
+                    stackFromEnd = true
+                }
+        }
     }
 
 }

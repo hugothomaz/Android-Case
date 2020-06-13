@@ -6,7 +6,7 @@ import io.reactivex.Maybe
 
 class GetFreightUseCase(private val repository: IFreightRepository) {
 
-    fun execute(freightID : Long) : Maybe<FreightModel>{
+    fun getFreightByID(freightID : Long) : Maybe<FreightModel>{
         return repository.fetchFreightByID(freightID)
     }
 
