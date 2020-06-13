@@ -1,5 +1,5 @@
 # Rota Frete!
-
+ 
 Aplicativo de estudo feito para aproveitar as melhores práticas de programação usando a APIs públicas de geolocalização e calculo de frete. 
 
 [APK](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/apk/RotaFrete.apk?raw=true) || [VIDEO](https://github.com/hugothomaz/Android-Case/blob/hugo-thomaz/assets/videos/vide_app_rota_frete.mp4?raw=true) || [YOUTUBE](https://www.youtube.com/watch?v=Ala4heQz7S4)
@@ -73,8 +73,6 @@ Camada para gerenciar regras de negócios usando eventos de propagação do UseC
 
 - ** Data: **
 Camada para dados de acesso integrado usando Repository e DataSource no banco de dados local ou na nuvem
-
-See more clean architecture [reference](https://www.linkedin.com/posts/charlestonanjos_clean-architecture-para-humanos-na-pr%C3%A1tica-activity-6589474515837833216-_dfe)
 
 ## CODE
 - **IDE - Android Studio 4.0** 
